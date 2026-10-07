@@ -1,0 +1,55 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  frontmatter?: { title: string; description?: string; lede?: string; draft?: boolean };
+  title?: string;
+  description?: string;
+  lede?: string;
+  draft?: boolean;
+}
+const fm = Astro.props.frontmatter ?? Astro.props;
+const { title, description, lede, draft } = fm as Required<Props>['frontmatter'];
+---
+
+<Base title={title} description={description ?? lede}>
+  <div class="wrap page-head">
+    <slot name="above" />
+    <h1>{title}</h1>
+    {lede && <p class="lede">{lede}</p>}
+    {
+      draft && (
+        <p class="draft">
+          <span class="status">draft</span> This will be finalised with the first members before sign-ups open.
+          <a href="/join/#form">Suggest changes on the form.</a>
+        </p>
+      )
+    }
+  </div>
+  <article class="wrap page-body prose">
+    <slot />
+  </article>
+</Base>
+
+<style>
+  .draft {
+    font-size: var(--step--1);
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.6rem;
+    align-items: center;
+  }
+  .prose :global(h2) {
+    margin-top: 2.5rem;
+  }
+  .prose :global(h3) {
+    margin-top: 1.75rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.35rem;
+  }
+  .prose :global(li > ul) {
+    margin-top: 0.35rem;
+  }
+</style>

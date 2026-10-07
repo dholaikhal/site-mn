@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found">
+  <div class="wrap page-head">
+    <pre class="err" aria-hidden="true">$ cd <span id="missing-path">/somewhere</span>
+cd: no such file or directory</pre>
+    <h1>Nothing lives at this address</h1>
+    <p class="lede">
+      If you were looking for a <code>~user</code> page, there's no member by that name. The{' '}
+      <a href="/members/">member list</a> has everyone.
+    </p>
+    <p><a href="/">Go to the homepage</a> or <a href="/join/">claim your ~name</a>.</p>
+  </div>
+</Base>
+
+<script>
+  const el = document.getElementById('missing-path');
+  try {
+    if (el) el.textContent = decodeURIComponent(location.pathname);
+  } catch {}
+</script>
+
+<style>
+  .err {
+    background: none;
+    padding: 0;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+</style>

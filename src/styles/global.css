@@ -1,0 +1,267 @@
+/*
+  mukto.net — tokens
+  Paper and ink, like a printed man page. The flag's green marks what belongs
+  to the commons (links, the house, live services); its red is reserved for
+  "now": the cursor, focus, today's event. Anek Bangla carries both scripts;
+  Iosevka appears only where the text really is terminal text.
+*/
+
+:root {
+  --paper: #f6f7f5;
+  --surface: #eceeeb;
+  --ink: #1a1c1b;
+  --muted: #5b625e;
+  --rule: #d6dad6;
+  --link: #00684b;
+  --flag: #00684b;
+  --green-soft: #e1eee7;
+  --chalk: #f6f7f5;
+  --red: #e0283c;
+  --ok: #00684b;
+  --err: #b3122a;
+  --term: #171b1a;
+  --term-ink: #d7dfda;
+
+  --sans: 'Anek Bangla Variable', 'Noto Sans Bengali', system-ui, sans-serif;
+  --mono: 'Iosevka', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --measure: 66ch;
+  --wide: 76rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  --step--1: 0.9rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.35rem;
+  --step-2: 1.8rem;
+  --step-3: clamp(2.1rem, 4.6vw, 3rem);
+  --step-4: clamp(2.6rem, 7vw, 5rem);
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #121514;
+    --surface: #1b1f1e;
+    --ink: #e5e8e6;
+    --muted: #9ba39f;
+    --rule: #2c3230;
+    --link: #6fcfa5;
+    --flag: #6fcfa5;
+    --green-soft: #1a2d25;
+    --chalk: #121514;
+    --red: #ff5468;
+    --ok: #6fcfa5;
+    --err: #ff8593;
+    --term: #0b0e0d;
+  }
+}
+:root[data-theme='dark'] {
+  --paper: #121514;
+  --surface: #1b1f1e;
+  --ink: #e5e8e6;
+  --muted: #9ba39f;
+  --rule: #2c3230;
+  --link: #6fcfa5;
+  --flag: #6fcfa5;
+  --green-soft: #1a2d25;
+  --chalk: #121514;
+  --red: #ff5468;
+  --ok: #6fcfa5;
+  --err: #ff8593;
+  --term: #0b0e0d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-stretch: 100%;
+  overflow-x: hidden;
+}
+
+:lang(bn) body,
+body:lang(bn) {
+  line-height: 1.75;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.1;
+  font-weight: 650;
+  font-stretch: 112%;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+h1 {
+  font-size: var(--step-3);
+  font-weight: 700;
+  font-stretch: 118%;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: var(--step-2);
+}
+h3 {
+  font-size: var(--step-1);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1em;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+code,
+kbd,
+pre,
+.mono {
+  font-family: var(--mono);
+  font-size: 0.95em;
+}
+:not(pre) > code {
+  background: var(--surface);
+  padding: 0.08em 0.35em;
+  border-radius: 3px;
+}
+pre {
+  background: var(--surface);
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  line-height: 1.45;
+  max-width: var(--measure);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3rem 0;
+}
+
+.wrap {
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--muted);
+  max-width: 40ch;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A block cursor, the one moving thing on the site. */
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  background: var(--red);
+  vertical-align: -0.15em;
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font: inherit;
+  font-weight: 600;
+  font-stretch: 110%;
+  padding: 0.6em 1.15em;
+  border-radius: 3px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover {
+  background: transparent;
+  color: var(--ink);
+}
+.button.ghost {
+  background: transparent;
+  color: var(--ink);
+}
+.button.ghost:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.status {
+  font-size: var(--step--1);
+  font-weight: 600;
+  font-stretch: 100%;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.05em 0.6em;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.page-head {
+  padding-block: clamp(2.5rem, 7vw, 5rem) 2rem;
+}
+.page-body {
+  padding-bottom: 5rem;
+}
+.page-body > * + h2 {
+  margin-top: 2.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
