@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Pillars from '../components/Pillars.astro';
+import Console from '../components/Console.astro';
+import EventRow from '../components/EventRow.astro';
+import MemberWall from '../components/MemberWall.astro';
+import Avatar from '../components/Avatar.astro';
+import { upcoming } from '../data/events';
+import { MEMBERS } from '../data/members';
+import { COMMITTEE } from '../data/team';
+import { PROJECTS } from '../data/org';
+---
+
+<Base>
+  <Hero />
+
+  <section class="wrap block split">
+    <div>
+      <h2>On the server right now</h2>
+      <Console />
+    </div>
+    <div>
+      <h2>Coming up</h2>
+      <ul class="events">
+        {upcoming.slice(0, 3).map((e) => <EventRow event={e} />)}
+      </ul>
+      <p class="more"><a href="/events/">All events</a> · <a href="/events.ics">Add to your calendar</a></p>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <Pillars />
+  </section>
+
+  <section class="wrap block">
+    <div class="head">
+      <h2>{MEMBERS.length} people live here</h2>
+      <a href="/members/">Read their .plan files</a>
+    </div>
+    <MemberWall />
+  </section>
+
+  <section class="wrap block">
+    <div class="head">
+      <h2>Made on mukto.net</h2>
+      <a href="/members/#projects">More projects</a>
+    </div>
+    <ul class="projects">
+      {
+        PROJECTS.map((p) => (
+          <li>
+            <p class="repo mono">git.mukto.net/{p.repo}</p>
+            <p>{p.what}</p>
+            <p class="lang">{p.lang}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap block">
+    <div class="head">
+      <h2>Who runs it</h2>
+      <a href="/team/">The committee and working groups</a>
+    </div>
+    <ul class="faces">
+      {
+        COMMITTEE.map((o) => (
+          <li>
+            <a href={`/team/#${o.user}`}>
+              <Avatar user={o.user} avatar={o.avatar} photo={o.photo} size={72} label={o.name ?? o.user} />
+              <span class="who">{o.name ?? `~${o.user}`}</span>
+              <span class="role">{o.role}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap block ask">
+    <h2>Want an account?</h2>
+    <p>The first cohort is invited. Put your name down and you'll get a login when sign-ups open.</p>
+    <p><a class="button" href="/join/">Claim your ~name</a></p>
+  </section>
+</Base>
+
+<style>
+  .block {
+    padding-top: clamp(2.75rem, 6vw, 4.5rem);
+  }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 2.5rem 3rem;
+    align-items: start;
+  }
+  h2 {
+    font-size: var(--step-2);
+  }
+  .events {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+  .more {
+    font-size: var(--step--1);
+    margin-top: 0.75rem;
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .head h2 {
+    margin: 0;
+  }
+  .projects {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 0 2rem;
+  }
+  .projects li {
+    border-top: 1px solid var(--rule);
+    padding: 0.9rem 0 0.6rem;
+  }
+  .projects p {
+    margin: 0 0 0.2rem;
+  }
+  .repo {
+    font-weight: 700;
+    color: var(--flag);
+    word-break: break-all;
+  }
+  .lang {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .faces {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: 1.25rem 1rem;
+  }
+  .faces a {
+    display: grid;
+    gap: 0.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: var(--step--1);
+    line-height: 1.3;
+  }
+  .faces a:hover .who {
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+  }
+  .who {
+    font-weight: 650;
+    margin-top: 0.4rem;
+  }
+  .role {
+    color: var(--muted);
+  }
+  .ask {
+    padding-bottom: 1rem;
+  }
+  @media (max-width: 960px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

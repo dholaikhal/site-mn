@@ -1,0 +1,64 @@
+---
+import { MEMBERS, MEMBER_CITIES } from '../data/members';
+import { past, upcoming, now } from '../data/events';
+import { ORG } from '../data/org';
+
+const days = Math.floor((now.getTime() - new Date(ORG.serverUp).getTime()) / 86400000);
+const newest = [...MEMBERS].sort((a, b) => b.joined.localeCompare(a.joined)).slice(0, 6);
+const next = upcoming[0];
+const nextDate = new Date(next.start).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Asia/Dhaka' });
+const came = past.reduce((s, e) => s + (e.attended ?? 0), 0);
+---
+
+<div class="console mono" role="group" aria-label="Server status">
+  <p><span class="p">$</span> uptime</p>
+  <p class="out">up {days} days, {MEMBERS.length} users, {MEMBER_CITIES.length} cities, load average: 0.31, 0.27, 0.22</p>
+  <p><span class="p">$</span> ls -t /home | head -6</p>
+  <p class="out">
+    {newest.map((m) => <a href={`/members/#${m.user}`}>{m.user}</a>)}
+  </p>
+  <p><span class="p">$</span> cat ~events/next</p>
+  <p class="out">
+    {nextDate} <a href={`/events/${next.slug}/`}>{next.title}</a>
+    {next.rsvps && next.capacity && <span class="dim">[{next.rsvps}/{next.capacity} going]</span>}
+  </p>
+  <p><span class="p">$</span> wc -l ~events/attendance</p>
+  <p class="out">{came} people at {past.length} events since June</p>
+  <p><span class="p">$</span> <span class="cursor" aria-hidden="true"></span></p>
+</div>
+
+<style>
+  .console {
+    background: var(--term);
+    color: var(--term-ink);
+    border-radius: 5px;
+    padding: 1.1rem 1.3rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    overflow-x: auto;
+  }
+  p {
+    margin: 0;
+    max-width: none;
+  }
+  .out {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.2ch;
+  }
+  .p {
+    color: #6fcfa5;
+  }
+  a {
+    color: #ffffff;
+    text-decoration-color: #6fcfa5;
+  }
+  a:hover {
+    color: #6fcfa5;
+  }
+  .dim {
+    color: #8aa597;
+  }
+</style>

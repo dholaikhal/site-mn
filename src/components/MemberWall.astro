@@ -1,0 +1,39 @@
+---
+import { MEMBERS } from '../data/members';
+import { identicon } from '../lib/avatar';
+---
+
+<ul class="wall">
+  {
+    MEMBERS.map((m) => (
+      <li>
+        <a href={`/members/#${m.user}`} title={`~${m.user}`} aria-label={`~${m.user}`} set:html={identicon(m.user, 44)} />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .wall {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 6px;
+  }
+  a {
+    display: block;
+    line-height: 0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  a :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+  a:hover {
+    outline: 2px solid var(--red);
+  }
+</style>

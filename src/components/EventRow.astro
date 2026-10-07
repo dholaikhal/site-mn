@@ -1,0 +1,147 @@
+---
+import type { Event } from '../data/events';
+
+interface Props {
+  event: Event;
+  past?: boolean;
+}
+const { event: e, past = false } = Astro.props;
+const start = new Date(e.start);
+const end = new Date(e.end);
+const fmt = (d: Date, o: Intl.DateTimeFormatOptions) => d.toLocaleString('en-GB', { timeZone: 'Asia/Dhaka', ...o });
+const month = fmt(start, { month: 'short' });
+const day = fmt(start, { day: 'numeric' });
+const weekday = fmt(start, { weekday: 'short' });
+const time = `${fmt(start, { hour: '2-digit', minute: '2-digit' })}–${fmt(end, { hour: '2-digit', minute: '2-digit' })}`;
+const full = e.capacity && e.rsvps ? Math.min(100, Math.round((e.rsvps / e.capacity) * 100)) : null;
+---
+
+<li class:list={['event', { past }]}>
+  <time class="date" datetime={e.start}>
+    <span class="m">{month}</span>
+    <span class="d">{day}</span>
+    <span class="w">{weekday}</span>
+  </time>
+  <div class="body">
+    <h3><a href={`/events/${e.slug}/`}>{e.title}</a></h3>
+    <p class="meta">
+      <span>{time}</span>
+      <span>{e.city === 'Online' ? 'Online' : e.city}{e.online && e.city !== 'Online' ? ' and online' : ''}</span>
+      <span class="kind">{e.kind}</span>
+    </p>
+    <p class="sum">{past && e.recap ? e.recap : e.summary}</p>
+  </div>
+  <div class="side">
+    {
+      past ? (
+        e.attended && (
+          <p class="count">
+            <strong>{e.attended}</strong> came
+          </p>
+        )
+      ) : full !== null ? (
+        <p class="count">
+          <strong>{e.rsvps}</strong>/{e.capacity} going
+          <span class="bar" aria-hidden="true">
+            <span style={`width:${full}%`} />
+          </span>
+        </p>
+      ) : (
+        <p class="count">Members only</p>
+      )
+    }
+  </div>
+</li>
+
+<style>
+  .event {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) 9rem;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .date {
+    align-self: start;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    padding: 0.35rem 0 0.4rem;
+    border: 1px solid var(--rule);
+    border-top: 4px solid var(--flag);
+    border-radius: 3px;
+    line-height: 1.1;
+    background: var(--paper);
+  }
+  .past .date {
+    border-top-color: var(--rule);
+    color: var(--muted);
+  }
+  .m,
+  .w {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .d {
+    font-size: 1.7rem;
+    font-weight: 700;
+    font-stretch: 115%;
+  }
+  h3 {
+    font-size: var(--step-1);
+    margin: 0 0 0.2rem;
+    font-stretch: 105%;
+  }
+  h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  h3 a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 1rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 0 0 0.35rem;
+  }
+  .kind {
+    color: var(--flag);
+  }
+  .sum {
+    margin: 0;
+  }
+  .count {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 0.3rem 0 0;
+  }
+  .count strong {
+    font-size: 1.15rem;
+    color: var(--ink);
+  }
+  .bar {
+    display: block;
+    height: 4px;
+    background: var(--rule);
+    margin-top: 0.4rem;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar span {
+    display: block;
+    height: 100%;
+    background: var(--flag);
+  }
+  @media (max-width: 680px) {
+    .event {
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+    .side {
+      grid-column: 2;
+    }
+  }
+</style>

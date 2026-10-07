@@ -1,0 +1,141 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Pillars from '../../components/Pillars.astro';
+import Console from '../../components/Console.astro';
+import EventRow from '../../components/EventRow.astro';
+import MemberWall from '../../components/MemberWall.astro';
+import Avatar from '../../components/Avatar.astro';
+import { upcoming } from '../../data/events';
+import { MEMBERS } from '../../data/members';
+import { COMMITTEE } from '../../data/team';
+import { bnDigits } from '../../lib/bangla';
+---
+
+<Base lang="bn" description="শেয়ার করা লিনাক্স সার্ভার, গিট, নিজের ওয়েব পেজ আর মাসিক আড্ডা, বাংলাদেশে যাঁরা কোড লেখেন বা শিখতে চান তাঁদের জন্য। চালান সদস্যরাই।">
+  <Hero lang="bn" />
+
+  <section class="wrap block split">
+    <div>
+      <h2>সার্ভারে এই মুহূর্তে</h2>
+      <Console />
+    </div>
+    <div>
+      <h2>সামনের ইভেন্ট</h2>
+      <ul class="events">
+        {upcoming.slice(0, 3).map((e) => <EventRow event={e} />)}
+      </ul>
+      <p class="more"><a href="/events/">সব ইভেন্ট</a> · <a href="/events.ics">ক্যালেন্ডারে যোগ করুন</a></p>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <Pillars lang="bn" />
+  </section>
+
+  <section class="wrap block">
+    <div class="head">
+      <h2>সার্ভারে {bnDigits(MEMBERS.length)} জনের অ্যাকাউন্ট</h2>
+      <a href="/members/">সবার .plan পড়ুন</a>
+    </div>
+    <MemberWall />
+  </section>
+
+  <section class="wrap block">
+    <div class="head">
+      <h2>যাঁরা চালান</h2>
+      <a href="/team/">কমিটি আর ওয়ার্কিং গ্রুপ</a>
+    </div>
+    <ul class="faces">
+      {
+        COMMITTEE.map((o) => (
+          <li>
+            <a href={`/team/#${o.user}`}>
+              <Avatar user={o.user} avatar={o.avatar} photo={o.photo} size={72} label={o.name ?? o.user} />
+              <span class="who">{o.name ?? `~${o.user}`}</span>
+              <span class="role">{o.roleBn}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap block ask">
+    <h2>অ্যাকাউন্ট চান?</h2>
+    <p>আপাতত শুধু আমন্ত্রিতরা অ্যাকাউন্ট পাচ্ছেন। নাম লিখে রাখুন, সাইন-আপ খুললে আমরা জানাব।</p>
+    <p><a class="button" href="/join/">আপনার ~নাম বুক করুন</a></p>
+    <p class="note">
+      সাইটের বাকি পাতা আর ফর্ম আপাতত ইংরেজিতে। অনুবাদে হাত লাগাতে চাইলে <a href="/join/?help=docs#form">জানান</a>।
+    </p>
+  </section>
+</Base>
+
+<style>
+  .block {
+    padding-top: clamp(2.75rem, 6vw, 4.5rem);
+  }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 2.5rem 3rem;
+    align-items: start;
+  }
+  h2 {
+    font-size: var(--step-2);
+  }
+  .events {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+  .more {
+    font-size: var(--step--1);
+    margin-top: 0.75rem;
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .head h2 {
+    margin: 0;
+  }
+  .faces {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: 1.25rem 1rem;
+  }
+  .faces a {
+    display: grid;
+    gap: 0.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: var(--step--1);
+    line-height: 1.35;
+  }
+  .who {
+    font-weight: 650;
+    margin-top: 0.4rem;
+  }
+  .role {
+    color: var(--muted);
+  }
+  .note {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  @media (max-width: 960px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+import house from '../data/house.txt?raw';
+
+interface Props {
+  lang?: 'en' | 'bn';
+}
+const bn = Astro.props.lang === 'bn';
+---
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="motd">
+      <p class="cmd mono" aria-hidden="true">$ cat /etc/motd</p>
+      {
+        bn ? (
+          <h1>বড় প্ল্যাটফর্মের বেড়ার বাইরে, নিজেদের একটা ঘর।</h1>
+        ) : (
+          <h1>Your safe home in a world of walled gardens.</h1>
+        )
+      }
+      {
+        bn ? (
+          <p class="intro">
+            একটা শেয়ার করা লিনাক্স সার্ভার, গিট, নিজের ওয়েব পেজ, আর মাসে একবার আড্ডা। যাঁরা কোড লেখেন বা
+            শিখতে চান, তাঁদের সবার জন্য। চালান সদস্যরাই।
+          </p>
+        ) : (
+          <p class="intro">
+            A shared Linux server, git, web hosting and a monthly meetup, for anyone in Bangladesh who
+            writes code or wants to start. Run by its members.
+          </p>
+        )
+      }
+      <p class="actions">
+        <a class="button" href="/join/">{bn ? 'আপনার ~নাম বুক করুন' : 'Claim your ~name'}</a>
+        <a class="button ghost" href="/events/">{bn ? 'পরের ইভেন্ট' : 'Next event'}</a>
+      </p>
+    </div>
+    <pre class="house" aria-hidden="true">{house}</pre>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  /* Iosevka is exactly half an em wide, so the 100-column art is 50em wide. */
+  .house {
+    margin: 0;
+    padding: 0;
+    background: none;
+    color: var(--flag);
+    font-family: var(--mono);
+    font-size: clamp(5px, 0.62vw, 8px);
+    line-height: 0.96;
+    max-width: none;
+    overflow: visible;
+    animation: print 0.9s steps(55, end) 0.1s both;
+  }
+  @keyframes print {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .cmd {
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 5.2vw, 4.4rem);
+    font-stretch: 122%;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+    margin-bottom: 1.25rem;
+  }
+  :global(html[lang='bn']) h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.2;
+    font-stretch: 105%;
+    max-width: 16ch;
+  }
+  .intro {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 38ch;
+    color: var(--muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.75rem 0 0;
+  }
+
+  @media (max-width: 860px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .house {
+      order: -1;
+      font-size: min(5.5px, calc((100vw - 2 * var(--gutter)) / 75));
+    }
+  }
+</style>

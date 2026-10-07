@@ -1,0 +1,77 @@
+---
+import { PHASES } from '../data/site';
+
+interface Props {
+  lang?: 'en' | 'bn';
+}
+const bn = Astro.props.lang === 'bn';
+---
+
+<ol class="phases">
+  {
+    PHASES.map((p) => (
+      <li class:list={['phase', { current: p.status === 'now' }]}>
+        <p class="name mono">
+          <span class="n">{p.n}</span> {p.name}
+          {p.status === 'now' && <span class="cursor" aria-hidden="true" />}
+        </p>
+        <p class="when">{bn ? p.statusBn : p.status === 'now' ? 'We are here' : p.status}</p>
+        <p class="sum">{bn ? p.summaryBn : p.summary}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .phases {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+  .phase {
+    border-top: 2px solid var(--rule);
+    padding: 1rem 1.5rem 0 0;
+  }
+  .phase.current {
+    border-top-color: var(--red);
+  }
+  .name {
+    font-size: var(--step-1);
+    font-weight: 700;
+    margin: 0;
+  }
+  .n {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .when {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 0 0 0.5rem;
+  }
+  .current .when {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sum {
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+  @media (max-width: 860px) {
+    .phases {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .phase {
+      border-top: 0;
+      border-left: 2px solid var(--rule);
+      padding: 0 0 1.25rem 1.25rem;
+    }
+    .phase.current {
+      border-left-color: var(--red);
+    }
+  }
+</style>
