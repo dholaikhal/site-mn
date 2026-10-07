@@ -18,7 +18,7 @@ const logbook = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     author: z.string(),
-    tag: z.enum(['minutes', 'money', 'server', 'news']),
+    tag: z.enum(['server', 'news', 'events']),
     summary: z.string(),
   }),
 });
