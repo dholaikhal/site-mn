@@ -1,0 +1,278 @@
+---
+import { HELPS, USES } from '../data/site';
+---
+
+<div class="term" data-term data-uses={Object.keys(USES).join(' ')} data-helps={Object.keys(HELPS).join(' ')}>
+  <div class="term-bar" aria-hidden="true">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="term-title mono">visitor@web: ~</span>
+  </div>
+  <div class="term-screen mono">
+    <div class="log" role="log" aria-live="polite"></div>
+    <form class="line" autocomplete="off">
+      <label class="prompt" for="term-input">visitor@web:~$</label>
+      <input
+        id="term-input"
+        class="mono"
+        type="text"
+        spellcheck="false"
+        autocapitalize="none"
+        placeholder="ssh join@mukto.net"
+        enterkeyhint="send"
+      />
+    </form>
+  </div>
+</div>
+<noscript><p>This terminal needs JavaScript. The form below does the same thing.</p></noscript>
+
+<script>
+  type Step = { key: string; prompt: string; check: (v: string) => string | null };
+
+  const USERNAME_RE = /^[a-z][a-z0-9_-]{1,23}$/;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  for (const term of document.querySelectorAll<HTMLElement>('[data-term]')) {
+    const log = term.querySelector<HTMLElement>('.log')!;
+    const form = term.querySelector<HTMLFormElement>('form')!;
+    const input = term.querySelector<HTMLInputElement>('input')!;
+    const prompt = term.querySelector<HTMLLabelElement>('.prompt')!;
+    const uses = term.dataset.uses!.split(' ');
+    const helps = term.dataset.helps!.split(' ');
+
+    const steps: Step[] = [
+      {
+        key: 'username',
+        prompt: 'choose a username:',
+        check: (v) => (USERNAME_RE.test(v) ? null : '2-24 chars: a-z, 0-9, - and _, starting with a letter.'),
+      },
+      {
+        key: 'email',
+        prompt: 'email, for when the door opens:',
+        check: (v) => (EMAIL_RE.test(v) ? null : "that doesn't look like an email address."),
+      },
+      {
+        key: 'uses',
+        prompt: `what would you use? [${uses.join(' ')}]:`,
+        check: (v) => {
+          const bad = v.split(/[\s,]+/).filter((w) => w && !uses.includes(w));
+          return bad.length ? `unknown: ${bad.join(' ')}. pick from the list, or press Enter to skip.` : null;
+        },
+      },
+      {
+        key: 'helps',
+        prompt: `would you help? [${helps.join(' ')}] or Enter for no:`,
+        check: (v) => {
+          const bad = v.split(/[\s,]+/).filter((w) => w && !helps.includes(w));
+          return bad.length ? `unknown: ${bad.join(' ')}. pick from the list, or press Enter to skip.` : null;
+        },
+      },
+    ];
+
+    let mode: 'shell' | 'signup' | 'done' = 'shell';
+    let step = 0;
+    const answers: Record<string, string> = {};
+
+    const print = (text: string, cls = '') => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      if (cls) p.className = cls;
+      log.append(p);
+      term.querySelector('.term-screen')!.scrollTop = 1e9;
+    };
+    const setPrompt = (text: string) => {
+      prompt.textContent = text;
+      input.placeholder = '';
+    };
+
+    const welcome = () => {
+      print('Welcome to mukto.net.');
+      print("Accounts are invite-only for now. We'll keep a place for you.");
+      print('Ctrl+C or "exit" leaves at any time.', 'dim');
+      mode = 'signup';
+      step = 0;
+      setPrompt(steps[0].prompt);
+    };
+
+    const shellCommand = (cmd: string) => {
+      const c = cmd || 'ssh join@mukto.net';
+      print(`visitor@web:~$ ${c}`, 'echo');
+      if (/^ssh\s+(\S+@)?mukto\.net$/.test(c)) {
+        if (!c.startsWith('ssh join@')) {
+          print("Permission denied (publickey). You don't have an account yet: try ssh join@mukto.net", 'err');
+          return;
+        }
+        welcome();
+      } else if (c === 'help') {
+        print('try: ssh join@mukto.net');
+      } else if (c === 'clear') {
+        log.replaceChildren();
+      } else if (c === 'whoami') {
+        print('visitor');
+      } else if (c === 'cat /etc/motd') {
+        print('mukto.net is your safe home in a world of walled gardens');
+      } else {
+        print(`${c.split(/\s+/)[0]}: command not found. try: ssh join@mukto.net`, 'err');
+      }
+    };
+
+    const quit = (msg = 'Connection to mukto.net closed.') => {
+      print(msg, 'dim');
+      mode = 'shell';
+      prompt.textContent = 'visitor@web:~$';
+      input.placeholder = 'ssh join@mukto.net';
+    };
+
+    const submit = async () => {
+      mode = 'done';
+      input.disabled = true;
+      print('saving your place…', 'dim');
+      try {
+        const res = await fetch('/api/interest', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify({
+            source: 'terminal',
+            lang: document.documentElement.lang,
+            username: answers.username,
+            email: answers.email,
+            uses: answers.uses,
+            helps: answers.helps,
+          }),
+        });
+        const body = await res.json().catch(() => ({ ok: false, error: 'unexpected reply from server.' }));
+        if (body.ok) {
+          print(`~${answers.username} is noted. See you at the first login prompt.`, 'ok');
+          quit();
+        } else {
+          print(`error: ${body.error}`, 'err');
+          quit();
+        }
+      } catch {
+        print('error: could not reach mukto.net. check your connection and try again.', 'err');
+        quit();
+      }
+      input.disabled = false;
+      input.focus();
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = input.value.trim();
+      input.value = '';
+      if (mode === 'shell') return shellCommand(value);
+      if (mode !== 'signup') return;
+
+      const s = steps[step];
+      const shown = s.key === 'email' && value ? value.replace(/^(.).*(@.*)$/, '$1…$2') : value;
+      print(`${s.prompt} ${shown}`, 'echo');
+      if (value === 'exit') return quit();
+      const optional = s.key === 'uses' || s.key === 'helps';
+      if (!(optional && !value)) {
+        const problem = s.check(value.toLowerCase());
+        if (problem) return print(problem, 'err');
+      }
+      answers[s.key] = value.toLowerCase();
+      step += 1;
+      if (step < steps.length) setPrompt(steps[step].prompt);
+      else submit();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.key === 'c' && mode === 'signup') {
+        event.preventDefault();
+        print('^C', 'echo');
+        quit();
+      }
+    });
+    term.addEventListener('click', () => input.focus());
+  }
+</script>
+
+<style>
+  .term {
+    background: #04140f;
+    color: #d8e6dd;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 52rem;
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.85rem;
+    background: var(--flag);
+  }
+  .dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .dot:first-child {
+    background: var(--red);
+  }
+  .term-title {
+    margin-left: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--chalk);
+  }
+  .term-screen {
+    padding: 1rem 1.1rem 1.1rem;
+    min-height: 16rem;
+    max-height: 26rem;
+    overflow-y: auto;
+    font-size: 1rem;
+    line-height: 1.5;
+    cursor: text;
+  }
+  .log :global(p) {
+    margin: 0;
+    max-width: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .log :global(.echo) {
+    color: #ffffff;
+  }
+  .log :global(.dim) {
+    color: #8aa597;
+  }
+  .log :global(.err) {
+    color: #ff8593;
+  }
+  .log :global(.ok) {
+    color: #8ad7b5;
+  }
+  .line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.6ch;
+    align-items: baseline;
+  }
+  .prompt {
+    color: #8ad7b5;
+    font-weight: 400;
+    white-space: pre-wrap;
+  }
+  .line input {
+    flex: 1 1 12ch;
+    min-width: 12ch;
+    background: transparent;
+    border: 0;
+    color: #ffffff;
+    font-size: inherit;
+    padding: 0;
+    caret-color: var(--red);
+  }
+  .line input::placeholder {
+    color: #5d7a6c;
+  }
+  .line input:focus-visible {
+    outline: none;
+  }
+  .term:focus-within {
+    box-shadow: 0 0 0 2px var(--red);
+  }
+</style>

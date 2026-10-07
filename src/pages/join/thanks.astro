@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="You're on the list">
+  <div class="wrap page-head">
+    <p class="mono done">$ echo $?<br />0</p>
+    <h1>You're on the list</h1>
+    <p class="lede">We'll email you when the first login prompt is ready.</p>
+  </div>
+  <div class="wrap page-body">
+    <p>Until then:</p>
+    <ul>
+      <li>Make your <a href="/learn/ssh-keys/">SSH key</a>, so you're ready on day one.</li>
+      <li>Read the <a href="/conduct/">code of conduct</a>. It's short.</li>
+      <li>Send <a href="/">mukto.net</a> to a friend who'd want a shell account.</li>
+      <li>Want to do more? <a href="/support/">Here's how to help</a>.</li>
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .done {
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+</style>

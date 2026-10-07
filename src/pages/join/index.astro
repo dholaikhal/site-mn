@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import Terminal from '../../components/Terminal.astro';
+import InterestForm from '../../components/InterestForm.astro';
+---
+
+<Base title="Join" description="mukto.net accounts are invite-only for now. Claim your ~name and get a login when sign-ups open.">
+  <div class="wrap page-head">
+    <h1>Join mukto.net</h1>
+    <p class="lede">
+      Accounts are invite-only while the first cohort shakes out the bugs. Put your name down and
+      you'll get a login when sign-ups open.
+    </p>
+  </div>
+
+  <div class="wrap page-body">
+    <h2>How joining will work</h2>
+    <ol class="how">
+      <li>
+        <strong>Make an SSH key</strong>, if you don't have one. It takes a minute:
+        <a href="/learn/ssh-keys/">here's how</a>.
+      </li>
+      <li><strong>Run one command</strong> from any terminal: <code>ssh join@mukto.net</code></li>
+      <li>
+        <strong>Pick a username</strong>, paste your public key and agree to the{' '}
+        <a href="/conduct/">code of conduct</a> and <a href="/acceptable-use/">acceptable use policy</a>.
+      </li>
+      <li><strong>Log in</strong> with <code>ssh you@mukto.net</code>. Your web page is already live at <code>mukto.net/~you</code>.</li>
+    </ol>
+    <p>You won't need a password or an app.</p>
+
+    <h2 id="try">Try it now</h2>
+    <p>
+      Until sign-ups open, <code>join@</code> runs here in your browser instead of on the server.
+      It saves your place on the list. Press <kbd>Enter</kbd> to run the command.
+    </p>
+    <Terminal />
+
+    <h2 id="form">Prefer a form?</h2>
+    <p>Same list, more questions. Everything except your email is optional.</p>
+    <InterestForm />
+  </div>
+</Base>
+
+<style>
+  .how {
+    padding-left: 1.4em;
+  }
+  .how li {
+    margin-bottom: 0.5rem;
+  }
+  .how li::marker {
+    font-weight: 700;
+    color: var(--flag);
+  }
+  kbd {
+    border: 1px solid var(--muted);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 0.35em;
+  }
+</style>

@@ -1,0 +1,262 @@
+---
+import { HELPS, USES } from '../data/site';
+
+interface Props {
+  id?: string;
+}
+const { id = 'interest' } = Astro.props;
+---
+
+<form class="interest" id={id} method="post" action="/api/interest" data-interest>
+  <div class="fields">
+    <p class="field">
+      <label for={`${id}-email`}>Email <span class="req">required</span></label>
+      <input id={`${id}-email`} name="email" type="email" autocomplete="email" required maxlength="254" />
+    </p>
+    <p class="field">
+      <label for={`${id}-name`}>Name</label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" maxlength="100" />
+    </p>
+    <p class="field">
+      <label for={`${id}-username`}>Username you'd like</label>
+      <span class="tilde-input">
+        <span class="mono" aria-hidden="true">~</span>
+        <input
+          id={`${id}-username`}
+          name="username"
+          type="text"
+          class="mono"
+          autocomplete="username"
+          autocapitalize="none"
+          spellcheck="false"
+          pattern="[a-z][a-z0-9_\-]{1,23}"
+          maxlength="24"
+          aria-describedby={`${id}-username-hint`}
+        />
+      </span>
+      <span class="hint" id={`${id}-username-hint`}>Lowercase letters, digits, - and _. We'll try to keep it for you.</span>
+    </p>
+    <p class="field">
+      <label for={`${id}-city`}>City</label>
+      <input id={`${id}-city`} name="city" type="text" autocomplete="address-level2" maxlength="80" />
+    </p>
+  </div>
+
+  <fieldset>
+    <legend>What would you use?</legend>
+    {
+      Object.entries(USES).map(([key, label]) => (
+        <label class="check">
+          <input type="checkbox" name="uses" value={key} />
+          <span>{label}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <fieldset>
+    <legend>Would you help?</legend>
+    {
+      Object.entries(HELPS).map(([key, label]) => (
+        <label class="check">
+          <input type="checkbox" name="helps" value={key} />
+          <span>{label}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <div class="fields">
+    <p class="field">
+      <label for={`${id}-community`}>Community, university or workplace</label>
+      <input id={`${id}-community`} name="community" type="text" maxlength="140" />
+    </p>
+    <p class="field wide">
+      <label for={`${id}-note`}>Anything else we should know?</label>
+      <textarea id={`${id}-note`} name="note" rows="3" maxlength="2000"></textarea>
+    </p>
+  </div>
+
+  <p class="trap" aria-hidden="true">
+    <label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <p class="submit">
+    <button class="button" type="submit">Add me to the list</button>
+    <span class="result" role="status" aria-live="polite"></span>
+  </p>
+  <p class="privacy">
+    We store what you send on our own server and use it only to tell you about mukto.net. No
+    newsletters you didn't ask for, no third parties. Reply to any email from us to have it deleted.
+  </p>
+</form>
+
+<script>
+  // Pre-tick boxes from the URL (/join/?use=events&help=sponsor) so other pages
+  // can link straight to the relevant part of the form.
+  const params = new URLSearchParams(location.search);
+  for (const form of document.querySelectorAll<HTMLFormElement>('form[data-interest]')) {
+    for (const v of params.getAll('use')) {
+      const box = form.querySelector<HTMLInputElement>(`input[name=uses][value="${CSS.escape(v)}"]`);
+      if (box) box.checked = true;
+    }
+    for (const v of params.getAll('help')) {
+      const box = form.querySelector<HTMLInputElement>(`input[name=helps][value="${CSS.escape(v)}"]`);
+      if (box) box.checked = true;
+    }
+    const username = params.get('username');
+    if (username) {
+      const input = form.querySelector<HTMLInputElement>('input[name=username]');
+      if (input) input.value = username;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const result = form.querySelector<HTMLElement>('.result')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      button.disabled = true;
+      result.textContent = 'Adding you…';
+      result.dataset.state = '';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { accept: 'application/json' },
+        });
+        const body = await res.json().catch(() => ({ ok: false, error: 'The server sent an unexpected reply.' }));
+        if (body.ok) {
+          location.href = '/join/thanks/';
+          return;
+        }
+        result.textContent = body.error;
+        result.dataset.state = 'error';
+      } catch {
+        result.textContent = 'Could not reach mukto.net. Check your connection and try again.';
+        result.dataset.state = 'error';
+      }
+      button.disabled = false;
+    });
+  }
+</script>
+
+<style>
+  .interest {
+    max-width: 52rem;
+  }
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.5rem;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.25rem;
+  }
+  .field.wide {
+    grid-column: 1 / -1;
+  }
+  label {
+    font-weight: 600;
+  }
+  .req {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .hint {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  input[type='text'],
+  input[type='email'],
+  textarea {
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--muted);
+    border-radius: 3px;
+    padding: 0.5em 0.7em;
+    width: 100%;
+  }
+  input.mono {
+    font-family: var(--mono);
+  }
+  .tilde-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--muted);
+    border-radius: 3px;
+    background: var(--paper);
+    padding-left: 0.7em;
+  }
+  .tilde-input input {
+    border: 0;
+    padding-left: 0.15em;
+  }
+  .tilde-input:focus-within {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
+  }
+  .tilde-input input:focus-visible {
+    outline: none;
+  }
+  fieldset {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    padding: 1rem 0 0.5rem;
+    margin: 0 0 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem 1.5rem;
+  }
+  legend {
+    font-weight: 650;
+    font-stretch: 112%;
+    font-size: var(--step-1);
+    padding: 0 0 0.5rem;
+    float: left;
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+  .check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  .check input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.15rem;
+    accent-color: var(--flag);
+    flex: none;
+  }
+  .trap {
+    position: absolute;
+    left: -10000px;
+  }
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .result[data-state='error'] {
+    color: var(--err);
+    font-weight: 600;
+  }
+  .privacy {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .fields,
+    fieldset {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
