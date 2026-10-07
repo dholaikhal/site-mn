@@ -1,0 +1,25 @@
+{
+  "name": "mukto-net",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "node ./dist/server/entry.mjs",
+    "check": "astro check",
+    "interest:report": "node scripts/interest-report.mjs"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.7",
+    "@fontsource-variable/anek-bangla": "^5.3.0",
+    "@fontsource/iosevka": "^5.3.0",
+    "astro": "^7.3.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.6.4",
+    "typescript": "^6.0.3"
+  }
+}
