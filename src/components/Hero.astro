@@ -21,18 +21,20 @@ const bn = Astro.props.lang === 'bn';
       {
         bn ? (
           <p class="intro">
-            একটা শেয়ার করা লিনাক্স সার্ভার, গিট, নিজের ওয়েব পেজ, আর মাসে একবার আড্ডা। যাঁরা কোড লেখেন বা
-            শিখতে চান, তাঁদের সবার জন্য। চালান সদস্যরাই।
+            mukto.net বাংলাদেশের একটা কমিউনিটি। এখানে মুক্ত সফটওয়্যার নিয়ে সবাই সবাইকে শেখায়, কেউ কিছু
+            বানাতে চাইলে হাত লাগায়। ক্লাস নেওয়া, নতুনদের পাশে থাকা, আড্ডা বসানো, শেয়ার করা সার্ভারটা চালু
+            রাখা, সবই করেন সদস্যরা, স্বেচ্ছায়।
           </p>
         ) : (
           <p class="intro">
-            A shared Linux server, git, web hosting and a monthly meetup, for anyone in Bangladesh who
-            writes code or wants to start. Run by its members.
+            mukto.net is a community of people in Bangladesh who help each other learn and make things
+            with free software. Members teach classes, mentor newcomers, run meetups and keep a small
+            shared server going, all as volunteers.
           </p>
         )
       }
       <p class="actions">
-        <a class="button" href="/join/">{bn ? 'আপনার ~নাম বুক করুন' : 'Claim your ~name'}</a>
+        <a class="button" href="/join/">{bn ? 'যুক্ত হোন' : 'Join us'}</a>
         <a class="button ghost" href="/events/">{bn ? 'পরের ইভেন্ট' : 'Next event'}</a>
       </p>
     </div>

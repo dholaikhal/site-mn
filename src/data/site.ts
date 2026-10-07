@@ -57,10 +57,10 @@ export type UseKey = keyof typeof USES;
 export type HelpKey = keyof typeof HELPS;
 
 export const PILLARS = [
-  { verb: 'Host', bn: 'ঘর', line: 'A shell, a web page and git, on a server the members run.', lineBn: 'সদস্যদের চালানো সার্ভারে শেল, ওয়েব পেজ আর গিট।', href: '/services/' },
-  { verb: 'Build', bn: 'গড়া', line: 'Open-source sprints, first PRs, Bangla translations.', lineBn: 'ওপেন সোর্স স্প্রিন্ট, প্রথম PR, বাংলা অনুবাদ।', href: '/members/#projects' },
-  { verb: 'Learn', bn: 'শেখা', line: 'Shell Saturday classes and guides in Bangla and English.', lineBn: 'শেল স্যাটারডে ক্লাস আর বাংলা-ইংরেজি গাইড।', href: '/learn/' },
-  { verb: 'Gather', bn: 'আড্ডা', line: 'Meetups and install-fests in Dhaka, Chattogram, Rajshahi and online.', lineBn: 'ঢাকা, চট্টগ্রাম, রাজশাহী আর অনলাইনে মিটআপ, ইনস্টল-ফেস্ট।', href: '/events/' },
+  { verb: 'Gather', bn: 'আড্ডা', line: 'Monthly meetups and install-fests, in Dhaka and other cities.', lineBn: 'প্রতি মাসে আড্ডা আর ইনস্টল-ফেস্ট, ঢাকায় আর অন্য শহরে।', href: '/events/' },
+  { verb: 'Learn', bn: 'শেখা', line: 'Free classes, and a mentor if you are just starting out.', lineBn: 'বিনা পয়সায় ক্লাস, আর একদম নতুন হলে একজন মেন্টর।', href: '/learn/' },
+  { verb: 'Build', bn: 'গড়া', line: 'Help with your project, and people to build things with.', lineBn: 'আপনার প্রজেক্টে সাহায্য, আর একসাথে কিছু বানানোর লোক।', href: '/members/#projects' },
+  { verb: 'Host', bn: 'ঘর', line: 'A server and a few tools the members look after together.', lineBn: 'সবাই মিলে দেখাশোনা করা একটা সার্ভার আর কয়েকটা টুল।', href: '/services/' },
 ] as const;
 
 export const PHASES = [

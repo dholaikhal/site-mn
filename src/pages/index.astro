@@ -15,11 +15,11 @@ import { PROJECTS } from '../data/org';
 <Base>
   <Hero />
 
+  <section class="wrap block">
+    <Pillars />
+  </section>
+
   <section class="wrap block split">
-    <div>
-      <h2>On the server right now</h2>
-      <Console />
-    </div>
     <div>
       <h2>Coming up</h2>
       <ul class="events">
@@ -27,10 +27,10 @@ import { PROJECTS } from '../data/org';
       </ul>
       <p class="more"><a href="/events/">All events</a> · <a href="/events.ics">Add to your calendar</a></p>
     </div>
-  </section>
-
-  <section class="wrap block">
-    <Pillars />
+    <div>
+      <h2>On the server right now</h2>
+      <Console />
+    </div>
   </section>
 
   <section class="wrap block">
@@ -80,9 +80,12 @@ import { PROJECTS } from '../data/org';
   </section>
 
   <section class="wrap block ask">
-    <h2>Want an account?</h2>
-    <p>The first cohort is invited. Put your name down and you'll get a login when sign-ups open.</p>
-    <p><a class="button" href="/join/">Claim your ~name</a></p>
+    <h2>Want to join?</h2>
+    <p>
+      Put your name down and we'll be in touch when sign-ups open. You don't need an account to
+      come to an event.
+    </p>
+    <p><a class="button" href="/join/">Join us</a> <a class="button ghost" href="/support/">Help out</a></p>
   </section>
 </Base>
 
@@ -92,7 +95,7 @@ import { PROJECTS } from '../data/org';
   }
   .split {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: 2.5rem 3rem;
     align-items: start;
   }
