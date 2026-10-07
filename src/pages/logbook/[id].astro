@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('logbook');
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const day = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Prose title={post.data.title} lede={post.data.summary}>
+  <p slot="above" class="crumb">
+    <a href="/logbook/">Logbook</a> / {day} / <a class="mono" href={`/members/#${post.data.author}`}>~{post.data.author}</a>
+  </p>
+  <Content />
+</Prose>
+
+<style>
+  .crumb {
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+  }
+  :global(.prose table) {
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  :global(.prose td) {
+    padding: 0.35rem 2rem 0.35rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  :global(.prose td:last-child) {
+    text-align: right;
+    padding-right: 0;
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { identicon } from '../../lib/avatar';
+
+const posts = (await getCollection('logbook')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const day = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<Base title="Logbook" description="News, committee minutes and money reports from mukto.net.">
+  <div class="wrap page-head">
+    <h1>Logbook</h1>
+    <p class="lede">News from the server, committee minutes and money reports. Minutes go up within 14 days of every meeting.</p>
+  </div>
+  <div class="wrap page-body">
+    <ul class="posts">
+      {
+        posts.map((p) => (
+          <li>
+            <p class="meta">
+              <time datetime={p.data.date.toISOString()}>{day(p.data.date)}</time>
+              <span class="tag">{p.data.tag}</span>
+            </p>
+            <h2>
+              <a href={`/logbook/${p.id}/`}>{p.data.title}</a>
+            </h2>
+            <p>{p.data.summary}</p>
+            <p class="by">
+              <span class="mini" set:html={identicon(p.data.author, 20)} />
+              <a class="mono" href={`/members/#${p.data.author}`}>~{p.data.author}</a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .posts li {
+    border-top: 1px solid var(--rule);
+    padding-block: 1.25rem 0.5rem;
+  }
+  .meta {
+    display: flex;
+    gap: 1rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 0 0 0.25rem;
+  }
+  .tag {
+    color: var(--flag);
+  }
+  h2 {
+    font-size: var(--step-1);
+    margin-bottom: 0.3rem;
+  }
+  h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  h2 a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+  }
+  .by {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--step--1);
+  }
+  .mini {
+    line-height: 0;
+  }
+</style>

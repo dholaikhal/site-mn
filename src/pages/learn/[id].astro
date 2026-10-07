@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({ params: { id: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<Prose title={guide.data.title} lede={guide.data.summary}>
+  <p slot="above" class="crumb"><a href="/learn/">Learn</a></p>
+  <Content />
+  <hr />
+  <p><a href="/learn/">More guides</a> or <a href="/join/">claim your ~name</a>.</p>
+</Prose>
+
+<style>
+  .crumb {
+    margin-bottom: 0.75rem;
+  }
+</style>
