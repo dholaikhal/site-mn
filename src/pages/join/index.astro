@@ -8,36 +8,28 @@ import InterestForm from '../../components/InterestForm.astro';
   <div class="wrap page-head">
     <h1>Join mukto.net</h1>
     <p class="lede">
-      Accounts are invite-only while the first cohort shakes out the bugs. Put your name down and
-      you'll get a login when sign-ups open.
+      Accounts are invite-only for now. Put your name down and we'll send you a login when
+      sign-ups open.
     </p>
   </div>
 
   <div class="wrap page-body">
     <h2>How joining will work</h2>
     <ol class="how">
-      <li>
-        <strong>Make an SSH key</strong>, if you don't have one. It takes a minute:
-        <a href="/learn/ssh-keys/">here's how</a>.
-      </li>
-      <li><strong>Run one command</strong> from any terminal: <code>ssh join@mukto.net</code></li>
-      <li>
-        <strong>Pick a username</strong>, paste your public key and agree to the{' '}
-        <a href="/conduct/">code of conduct</a> and the <a href="/rules/">rules</a>.
-      </li>
-      <li><strong>Log in</strong> with <code>ssh you@mukto.net</code>. Your web page is already live at <code>mukto.net/~you</code>.</li>
+      <li>Make an SSH key (<a href="/learn/ssh-keys/">how</a>).</li>
+      <li>Run <code>ssh join@mukto.net</code>.</li>
+      <li>Pick a username, paste your key, agree to the <a href="/conduct/">code of conduct</a> and <a href="/rules/">rules</a>.</li>
+      <li>Log in with <code>ssh you@mukto.net</code>. Your page is at <code>mukto.net/~you</code>.</li>
     </ol>
-    <p>You won't need a password or an app.</p>
 
     <h2 id="try">Try it now</h2>
     <p>
-      Until sign-ups open, <code>join@</code> runs here in your browser instead of on the server.
-      It saves your place on the list. Press <kbd>Enter</kbd> to run the command.
+      Until sign-ups open, this runs in your browser and saves your place. Press <kbd>Enter</kbd>.
     </p>
     <Terminal />
 
     <h2 id="form">Prefer a form?</h2>
-    <p>Same list, more questions. Everything except your email is optional.</p>
+    <p>Same list, more questions. Only email is required.</p>
     <InterestForm />
   </div>
 </Base>

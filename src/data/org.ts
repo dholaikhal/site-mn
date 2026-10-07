@@ -4,7 +4,7 @@ export const ORG = {
   name: 'mukto.net',
   founded: '2026-06-13',
   serverUp: '2026-07-20',
-  status: 'A volunteer-run community. Nobody is paid and nothing is sold.',
+  status: 'A volunteer-run community.',
   hosting: 'Badda, Dhaka',
   email: {
     hello: 'hello@mukto.net',
