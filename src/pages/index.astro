@@ -44,11 +44,11 @@ import { PROJECTS } from '../data/org';
   <section class="wrap block">
     <div class="head">
       <h2>Made on mukto.net</h2>
-      <a href="/members/#projects">More projects</a>
+      <a href="/members/#projects">All {PROJECTS.length} projects</a>
     </div>
     <ul class="projects">
       {
-        PROJECTS.map((p) => (
+        PROJECTS.filter((p) => p.featured).map((p) => (
           <li>
             <p class="repo mono">git.mukto.net/{p.repo}</p>
             <p>{p.what}</p>
