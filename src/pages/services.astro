@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import Phases from '../components/Phases.astro';
+import { SERVICES } from '../data/site';
+
+const LABEL = { live: 'Live', beta: 'Beta', planned: 'Planned' } as const;
+---
+
+<Base title="Services" description="What mukto.net runs: shell accounts, web pages, git, chat, and what's planned next.">
+  <div class="wrap page-head">
+    <h1>Services</h1>
+    <p class="lede">Four services run for the first cohort today. The rest are planned, in the order below.</p>
+  </div>
+
+  <div class="wrap page-body">
+    <ul class="svc">
+      {
+        SERVICES.map((s) => (
+          <li class={s.status}>
+            <p class="top">
+              <span class="name">{s.name}</span>
+              <span class={`pill ${s.status}`}>{LABEL[s.status]}</span>
+            </p>
+            <p class="what">{s.what}</p>
+            {s.address && <p class="addr mono">{s.address}</p>}
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>What every account gets</h2>
+    <table class="limits">
+      <tbody>
+        <tr><th scope="row">Disk</th><td>5 GB in your home directory</td></tr>
+        <tr><th scope="row">Processes</th><td>30 at a time; ask before running anything 24/7</td></tr>
+        <tr><th scope="row">Web</th><td><code>~/public_html</code> served at <code>mukto.net/~you</code>, static files only</td></tr>
+        <tr><th scope="row">Git</th><td>Unlimited public repositories, 10 private</td></tr>
+        <tr><th scope="row">Backups</th><td>Nightly, kept for 30 days. Keep your own copy too.</td></tr>
+        <tr><th scope="row">Software</th><td>Debian stable. Ask in <code>#ops</code> for packages.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The plan</h2>
+    <Phases />
+
+    <p class="ask">
+      Need something that isn't here? <a href="/join/#form">Tell us on the form</a>. What people ask
+      for is what we build next.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .svc {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: 1rem;
+  }
+  .svc li {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.9rem 1rem;
+  }
+  .svc li.planned {
+    border-style: dashed;
+  }
+  .svc li.planned .name,
+  .svc li.planned .what {
+    color: var(--muted);
+  }
+  .svc p {
+    margin: 0;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem !important;
+  }
+  .name {
+    font-weight: 650;
+    font-stretch: 108%;
+  }
+  .pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.05em 0.6em;
+    white-space: nowrap;
+  }
+  .pill.live {
+    background: var(--flag);
+    color: var(--paper);
+  }
+  .pill.beta {
+    border: 1px solid var(--flag);
+    color: var(--flag);
+  }
+  .pill.planned {
+    border: 1px dashed var(--muted);
+    color: var(--muted);
+  }
+  .what {
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+  .addr {
+    margin-top: 0.5rem !important;
+    font-size: 0.85rem;
+    color: var(--flag);
+  }
+  .limits {
+    border-collapse: collapse;
+    max-width: 44rem;
+    width: 100%;
+  }
+  .limits th,
+  .limits td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .limits th {
+    width: 8rem;
+    font-weight: 600;
+  }
+  .ask {
+    margin-top: 2rem;
+  }
+</style>

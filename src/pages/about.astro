@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+import { ORG } from '../data/org';
+---
+
+<Base title="About" description="What mukto.net is, where the name comes from, and the principles it runs on.">
+  <div class="wrap page-head">
+    <h1>About mukto.net</h1>
+    <p class="lede">
+      A not-for-profit association that runs a shared Linux server, teaches, and holds meetups, for
+      anyone in Bangladesh who builds with free software.
+    </p>
+  </div>
+
+  <div class="wrap page-body cols">
+    <div>
+      <h2>The name</h2>
+      <p>
+        <span lang="bn" class="bn-word">মুক্ত</span> (<em>mukto</em>) means free, open, set loose.
+        Bangla calls free software <span lang="bn">মুক্ত সফটওয়্যার</span>, and that's where we took it
+        from.
+      </p>
+
+      <h2>How it started</h2>
+      <p>
+        The first plan was small: one shared Unix machine, a tilde server, where everyone gets a
+        shell, a home directory and a web page, and learns by poking at what the neighbours built.
+      </p>
+      <p>
+        Thirty-eight people came to the founding adda on 13 June 2026 and wanted more than that:
+        classes, install-fests, translation sprints, a place for local open-source projects. So
+        mukto.net became something closer to what Framasoft is in France, with the shared server
+        still in the middle of it.
+      </p>
+
+      <h2>What we hold to</h2>
+      <dl class="principles">
+        <dt>Free software only</dt>
+        <dd>Everything we run is free and open source, configuration included.</dd>
+        <dt>No ads or tracking</dt>
+        <dd>The status bar at the bottom of every page counts cookies and requests to other sites. Both should read 0.</dd>
+        <dt>Built for here</dt>
+        <dd>Bangla and English, events outside Dhaka, prices in taka, and ideally a server inside the country.</dd>
+        <dt>Rules written down</dt>
+        <dd>A code of conduct, a constitution and published accounts, applied by people you can name.</dd>
+        <dt>Only what we can keep running</dt>
+        <dd>Four services run today. More come when there are volunteers to look after them.</dd>
+        <dt>Working with other groups</dt>
+        <dd>Several Linux and FOSS groups were here before us. If one of them needs a server for a workshop, they can ask.</dd>
+      </dl>
+
+      <h2>What we aren't</h2>
+      <p>
+        A company, a hosting provider, or production infrastructure for your startup. Nothing here is
+        for sale.
+      </p>
+    </div>
+
+    <aside class="facts">
+      <dl>
+        <dt>Legal status</dt>
+        <dd>{ORG.status}</dd>
+        <dt>Founded</dt>
+        <dd>13 June 2026, Dhaka</dd>
+        <dt>Server</dt>
+        <dd>{ORG.hosting}, since 20 July 2026</dd>
+        <dt>Run by</dt>
+        <dd><a href="/team/">An elected committee and five working groups</a></dd>
+        <dt>Rules</dt>
+        <dd>
+          <a href="/governance/">Constitution</a>, <a href="/conduct/">code of conduct</a>,
+          <a href="/acceptable-use/">acceptable use</a>
+        </dd>
+        <dt>Money</dt>
+        <dd><a href="/accounts/">Quarterly accounts</a></dd>
+        <dt>Contact</dt>
+        <dd><a href={`mailto:${ORG.email.hello}`}>{ORG.email.hello}</a></dd>
+      </dl>
+    </aside>
+  </div>
+
+  <div class="wrap lineage">
+    <h2>Who we learned from</h2>
+    <ul>
+      <li><a href="https://sdf.org">SDF</a>, the public Unix system running since 1987</li>
+      <li><a href="https://tilde.club">tilde.club</a> and <a href="https://tilde.town">tilde.town</a>, which made shared Unix boxes fun again</li>
+      <li><a href="https://hashbang.sh">hashbang.sh</a>, for signing up from the terminal</li>
+      <li><a href="https://envs.net">envs.net</a>, a pubnix that grew a whole set of services</li>
+      <li><a href="https://framasoft.org">Framasoft</a>, for free services and teaching as a public good</li>
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2rem 4rem;
+    align-items: start;
+    padding-bottom: 2rem;
+  }
+  .cols h2:first-child {
+    margin-top: 0;
+  }
+  .cols h2 {
+    margin-top: 2.25rem;
+  }
+  .bn-word {
+    font-size: 1.3em;
+    font-weight: 600;
+  }
+  .principles {
+    max-width: var(--measure);
+    margin: 0;
+  }
+  .principles dt {
+    font-weight: 650;
+    margin-top: 0.75rem;
+  }
+  .principles dd {
+    margin: 0;
+    color: var(--muted);
+  }
+  .facts {
+    border: 1px solid var(--rule);
+    border-top: 4px solid var(--flag);
+    border-radius: 3px;
+    padding: 1.25rem;
+    font-size: var(--step--1);
+  }
+  .facts dl {
+    margin: 0;
+  }
+  .facts dt {
+    color: var(--muted);
+  }
+  .facts dd {
+    margin: 0 0 0.8rem;
+  }
+  .lineage {
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+  }
+  .lineage h2 {
+    font-size: var(--step-1);
+  }
+  .lineage ul {
+    color: var(--muted);
+  }
+  @media (max-width: 860px) {
+    .cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

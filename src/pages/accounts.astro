@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import { IN_KIND, LEDGER, ORG, taka } from '../data/org';
+
+// One summary per period, by category. Line items and receipts stay with the
+// treasurer and are open to members on request (constitution, article 8).
+const PERIODS = [{ name: 'First period', from: '2026-06-13', to: '2026-09-30', published: '5 October 2026', post: '/logbook/2026-10-05-q3-money/' }];
+
+const CATEGORIES = [
+  ['hosting', 'Server and backups'],
+  ['event', 'Events'],
+  ['hardware', 'Hardware for install-fests'],
+  ['print', 'Printing'],
+  ['domain', 'Domain name'],
+] as const;
+
+const day = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const statements = PERIODS.map((p) => {
+  const inPeriod = LEDGER.filter((e) => e.date >= p.from && e.date <= p.to);
+  const income = inPeriod.filter((e) => e.amount > 0).reduce((s, e) => s + e.amount, 0);
+  const lines = CATEGORIES.map(([k, label]) => ({
+    label,
+    amount: inPeriod.filter((e) => e.kind === k).reduce((s, e) => s - e.amount, 0),
+  })).filter((l) => l.amount > 0);
+  const spent = lines.reduce((s, l) => s + l.amount, 0);
+  return { ...p, income, lines, spent, closing: income - spent };
+});
+---
+
+<Base title="Accounts" description="mukto.net's published accounts: what came in, what it was spent on, and how money is handled.">
+  <div class="wrap page-head">
+    <h1>Accounts</h1>
+    <p class="lede">
+      A summary every quarter, and annual accounts presented at the general assembly. Members can
+      see the full ledger and receipts on request.
+    </p>
+  </div>
+
+  <div class="wrap page-body">
+    {
+      statements.map((s) => (
+        <section class="statement">
+          <h2>
+            {s.name}: {day(s.from)} to {day(s.to)}
+          </h2>
+          <table>
+            <tbody>
+              <tr class="group">
+                <th scope="row">Income</th>
+                <td />
+              </tr>
+              <tr>
+                <th scope="row">Contributions from members</th>
+                <td>{taka(s.income)}</td>
+              </tr>
+              <tr class="group">
+                <th scope="row">Spending</th>
+                <td />
+              </tr>
+              {s.lines.map((l) => (
+                <tr>
+                  <th scope="row">{l.label}</th>
+                  <td>{taka(l.amount)}</td>
+                </tr>
+              ))}
+              <tr class="sub">
+                <th scope="row">Total spending</th>
+                <td>{taka(s.spent)}</td>
+              </tr>
+              <tr class="total">
+                <th scope="row">Funds at end of period</th>
+                <td>{taka(s.closing)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note">
+            Published {s.published}. <a href={s.post}>The treasurer's note</a>. Not yet reviewed: the
+            first annual review is at the general assembly on 19 December 2026.
+          </p>
+        </section>
+      ))
+    }
+
+    <h2>Given in kind</h2>
+    <ul>
+      {IN_KIND.map((k) => <li><strong>{k.from}</strong>: {k.what}</li>)}
+    </ul>
+
+    <h2>How money is handled</h2>
+    <ul>
+      <li>Contributions are voluntary and don't buy votes or extra resources.</li>
+      <li>Every expense has a receipt. Two officers approve anything over ৳10,000, the general assembly anything over ৳50,000.</li>
+      <li>Nobody is paid. Volunteers are reimbursed for out-of-pocket costs against receipts.</li>
+      <li>Until mukto.net is registered, funds are kept in a dedicated account, and the committee reviews the statement every month.</li>
+      <li>We don't accept money that comes with conditions on what we run.</li>
+    </ul>
+    <p>
+      Members who want to see the ledger, or anyone with a question about these figures:
+      <a href={`mailto:${ORG.email.treasurer}`}>{ORG.email.treasurer}</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .statement {
+    margin-bottom: 2.5rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 34rem;
+    font-variant-numeric: tabular-nums;
+  }
+  th,
+  td {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    font-weight: 400;
+  }
+  th {
+    padding-left: 1rem;
+  }
+  td {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .group th {
+    padding-left: 0;
+    font-weight: 650;
+    padding-top: 1rem;
+  }
+  .sub th,
+  .sub td {
+    color: var(--muted);
+  }
+  .total th,
+  .total td {
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+    border-bottom: 0;
+    padding-left: 0;
+  }
+  .note {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-top: 0.75rem;
+  }
+</style>

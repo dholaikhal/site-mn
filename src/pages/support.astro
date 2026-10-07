@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import { GROUPS } from '../data/team';
+import { ORG } from '../data/org';
+---
+
+<Base title="Support us" description="Volunteer, contribute money, or sponsor hardware, bandwidth or a venue for mukto.net.">
+  <div class="wrap page-head">
+    <h1>Support mukto.net</h1>
+    <p class="lede">The server costs ৳3,300 a month and events cost about as much again. You can help with time, money or things.</p>
+  </div>
+
+  <div class="wrap page-body">
+    <section class="ways">
+      <div>
+        <h2>Give time</h2>
+        <p>Pick a working group and go to its next meeting. No application.</p>
+        <ul class="groups">
+          {GROUPS.map((g) => <li>{g.name} <span>{g.meets}</span></li>)}
+        </ul>
+        <p><a href="/team/">Meet the groups</a></p>
+      </div>
+      <div>
+        <h2>Give money</h2>
+        <p>
+          Members contribute what they like, monthly or once, by bKash or bank transfer to the
+          treasurer. Every contribution is recorded and receipted, and shows up in the
+          <a href="/accounts/">quarterly accounts</a>.
+        </p>
+        <p>
+          Not a member? We'll take donations from the public once we're registered as a
+          non-profit and can issue receipts. <a href="/join/?help=donate#form">Pledge now</a> and we'll
+          tell you when.
+        </p>
+      </div>
+      <div>
+        <h2>Give things</h2>
+        <p>
+          Retired servers, rack space, bandwidth, a room for a Saturday, printing. Supporters get a
+          line on this page and nothing more: no logos on the server and no say in what we run.
+        </p>
+        <p><a href={`mailto:${ORG.email.hello}?subject=Sponsoring%20mukto.net`}>{ORG.email.hello}</a></p>
+      </div>
+    </section>
+
+    <h2>Supporters</h2>
+    <p>
+      In kind so far: a rooftop in Dhanmondi, a university lab in Mohakhali and a meeting room in
+      Agrabad. The hosts asked not to be named. If you'd like to be the first named supporter,
+      write to <a href={`mailto:${ORG.email.hello}`}>{ORG.email.hello}</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .ways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .ways > div {
+    border-top: 2px solid var(--ink);
+    padding-top: 1rem;
+  }
+  .ways h2 {
+    font-size: var(--step-1);
+  }
+  .groups {
+    list-style: none;
+    padding: 0;
+    font-size: var(--step--1);
+  }
+  .groups li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-weight: 600;
+  }
+  .groups span {
+    display: block;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .more {
+    font-size: var(--step--1);
+    margin-top: 0.75rem;
+  }
+  @media (max-width: 860px) {
+    .ways {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
