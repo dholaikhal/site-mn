@@ -51,16 +51,33 @@ On the server: `docker exec <container> node scripts/interest-report.mjs /data/i
 
 ## Deploy
 
-The site needs Node for the one API route. With Docker, behind the existing traefik:
+Two build targets, picked by `DEPLOY_TARGET`:
+
+| Target | Command | Output | Interest list |
+|---|---|---|---|
+| `node` (default) | `npm run build` | `dist/client` + `dist/server` | `/api/interest` on the same server |
+| `pages` | `DEPLOY_TARGET=pages npm run build` | `dist/` (static) | posts to `PUBLIC_INTEREST_ENDPOINT` |
+
+**GitHub Pages** (`.github/workflows/pages.yml`) builds the `pages` target on every push to
+`main` and publishes it at mukto.net (`public/CNAME`). The form posts to the repository variable
+`INTEREST_ENDPOINT`. Leave it unset and the form says the list isn't connected.
+
+**The interest API** runs from the Docker image (Node target), anywhere you can run a container:
 
 ```sh
 docker build -t mukto-net .
-docker run -d --name mukto-net -v mukto-data:/data -p 8080:8080 mukto-net
+docker run -d --name mukto-net -v mukto-data:/data -p 8080:8080 \
+  -e ALLOWED_ORIGINS=https://mukto.net,https://www.mukto.net mukto-net
 ```
 
-Point traefik at port 8080. The server trusts the last `X-Forwarded-For` entry for rate
-limiting, which is correct behind exactly one proxy. Back up the `mukto-data` volume: it holds
-the interest list.
+Point a hostname such as `api.mukto.net` at it through traefik, then set
+`INTEREST_ENDPOINT=https://api.mukto.net/api/interest` in the repository variables. The endpoint
+answers CORS only for `ALLOWED_ORIGINS` and refuses posts from other sites. Rate limiting trusts
+the last `X-Forwarded-For` entry, which is correct behind exactly one proxy. Back up the
+`mukto-data` volume: it holds the list.
+
+**CI** (`.github/workflows/ci.yml`) type-checks, builds both targets and builds the Docker image
+on every push and pull request.
 
 ## Before launch
 

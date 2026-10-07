@@ -1,8 +1,15 @@
 ---
 import { HELPS, USES } from '../data/site';
+const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
 ---
 
-<div class="term" data-term data-uses={Object.keys(USES).join(' ')} data-helps={Object.keys(HELPS).join(' ')}>
+<div
+  class="term"
+  data-term
+  data-endpoint={endpoint}
+  data-uses={Object.keys(USES).join(' ')}
+  data-helps={Object.keys(HELPS).join(' ')}
+>
   <div class="term-bar" aria-hidden="true">
     <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     <span class="term-title mono">visitor@web: ~</span>
@@ -38,6 +45,7 @@ import { HELPS, USES } from '../data/site';
     const prompt = term.querySelector<HTMLLabelElement>('.prompt')!;
     const uses = term.dataset.uses!.split(' ');
     const helps = term.dataset.helps!.split(' ');
+    const endpoint = term.dataset.endpoint;
 
     const steps: Step[] = [
       {
@@ -126,8 +134,14 @@ import { HELPS, USES } from '../data/site';
       mode = 'done';
       input.disabled = true;
       print('saving your place…', 'dim');
+      if (!endpoint) {
+        print('error: the list is not connected on this copy of the site. email hello@mukto.net instead.', 'err');
+        quit();
+        input.disabled = false;
+        return;
+      }
       try {
-        const res = await fetch('/api/interest', {
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'content-type': 'application/json', accept: 'application/json' },
           body: JSON.stringify({

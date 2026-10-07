@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Build for Node (pages + interest API)
+        run: npm run build
+      - name: Build for GitHub Pages (static only)
+        run: npm run build
+        env:
+          DEPLOY_TARGET: pages
+      - name: Build the Docker image
+        run: docker build -t mukto-net:ci .

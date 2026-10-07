@@ -1,24 +1,56 @@
 import type { APIRoute } from 'astro';
-import { limited, parse, save } from '../../lib/interest';
+import { limited, parse, save } from '../lib/interest';
 
-export const prerender = false;
+// Injected by astro.config.mjs only for the Node build. When the pages are on
+// GitHub Pages, the form posts here cross-origin, so allowed origins get CORS
+// headers and the no-JavaScript redirect goes back to the site that sent it.
+const ALLOWED = (process.env.ALLOWED_ORIGINS ?? 'https://mukto.net,https://www.mukto.net')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+function cors(request: Request): Record<string, string> {
+  const origin = request.headers.get('origin');
+  if (!origin || !ALLOWED.includes(origin)) return {};
+  return {
+    'access-control-allow-origin': origin,
+    'access-control-allow-methods': 'POST, OPTIONS',
+    'access-control-allow-headers': 'content-type, accept',
+    vary: 'Origin',
+  };
+}
+
+function siteOrigin(request: Request) {
+  const origin = request.headers.get('origin');
+  return origin && ALLOWED.includes(origin) ? origin : new URL(request.url).origin;
+}
 
 function reply(request: Request, status: number, body: { ok: boolean; error?: string }) {
+  const headers = cors(request);
   const wantsJson = request.headers.get('accept')?.includes('application/json');
   if (wantsJson) {
     return new Response(JSON.stringify(body), {
       status,
-      headers: { 'content-type': 'application/json' },
+      headers: { ...headers, 'content-type': 'application/json' },
     });
   }
-  if (body.ok) return Response.redirect(new URL('/join/thanks/', request.url), 303);
+  if (body.ok) {
+    return new Response(null, { status: 303, headers: { ...headers, location: `${siteOrigin(request)}/join/thanks/` } });
+  }
   return new Response(`Could not add you to the list: ${body.error}\n\nGo back and try again.`, {
     status,
-    headers: { 'content-type': 'text/plain; charset=utf-8' },
+    headers: { ...headers, 'content-type': 'text/plain; charset=utf-8' },
   });
 }
 
+export const OPTIONS: APIRoute = ({ request }) => new Response(null, { status: 204, headers: cors(request) });
+
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const origin = request.headers.get('origin');
+  if (origin && origin !== new URL(request.url).origin && !ALLOWED.includes(origin)) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
   let input: Record<string, unknown>;
   try {
     if (request.headers.get('content-type')?.includes('application/json')) {

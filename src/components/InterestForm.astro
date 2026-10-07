@@ -5,9 +5,11 @@ interface Props {
   id?: string;
 }
 const { id = 'interest' } = Astro.props;
+// Empty on a static build with no endpoint configured (see astro.config.mjs).
+const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
 ---
 
-<form class="interest" id={id} method="post" action="/api/interest" data-interest>
+<form class="interest" id={id} method="post" action={endpoint || undefined} data-interest>
   <div class="fields">
     <p class="field">
       <label for={`${id}-email`}>Email <span class="req">required</span></label>
@@ -82,9 +84,17 @@ const { id = 'interest' } = Astro.props;
   </p>
 
   <p class="submit">
-    <button class="button" type="submit">Add me to the list</button>
+    <button class="button" type="submit" disabled={!endpoint}>Add me to the list</button>
     <span class="result" role="status" aria-live="polite"></span>
   </p>
+  {
+    !endpoint && (
+      <p class="offline">
+        The list isn't connected on this copy of the site. Email
+        <a href="mailto:hello@mukto.net">hello@mukto.net</a> instead.
+      </p>
+    )
+  }
   <p class="privacy">
     We store what you send on our own server and use it only to tell you about mukto.net. No
     newsletters you didn't ask for, no third parties. Reply to any email from us to have it deleted.
@@ -248,6 +258,10 @@ const { id = 'interest' } = Astro.props;
   .result[data-state='error'] {
     color: var(--err);
     font-weight: 600;
+  }
+  .offline {
+    font-weight: 600;
+    color: var(--err);
   }
   .privacy {
     font-size: var(--step--1);
