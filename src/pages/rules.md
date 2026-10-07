@@ -17,7 +17,7 @@ You also agree to the [code of conduct](/conduct/), which covers how we treat ea
 
 ## Don't
 
-- Break the law, in Bangladesh or in Germany where the server is.
+- Break the law.
 - Attack anything: scanning, brute-forcing, exploiting or flooding any system, ours or anyone else's. Practise security on machines you own.
 - Send spam, host phishing pages or malware, or share pirated software or media.
 - Mine cryptocurrency, or run anything else that burns shared CPU for profit.

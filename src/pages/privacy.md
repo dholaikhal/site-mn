@@ -28,7 +28,7 @@ When you delete your account, your files and repositories are deleted within 30 
 
 ## Where data lives
 
-Our server is in Frankfurt, Germany, and backups are elsewhere in the EU. Only the two server admins have root.
+Our server is in Badda, Dhaka, and encrypted backups are kept on a second machine elsewhere in the city. Only the two server admins have root.
 
 ## Requests from authorities
 

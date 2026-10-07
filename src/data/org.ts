@@ -5,7 +5,7 @@ export const ORG = {
   founded: '2026-06-13',
   serverUp: '2026-07-20',
   status: 'A volunteer-run community. Nobody is paid and nothing is sold.',
-  hosting: 'Frankfurt, Germany',
+  hosting: 'Badda, Dhaka',
   email: {
     hello: 'hello@mukto.net',
     conduct: 'conduct@mukto.net',
@@ -30,4 +30,4 @@ export const PROJECTS: Project[] = [
 
 // While members, team, events and the ledger are sample data, every page says
 // so in the footer. Set to false once they are real.
-export const SAMPLE_DATA = true;
+export const SAMPLE_DATA = false;
