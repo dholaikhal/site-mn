@@ -1,7 +1,9 @@
 // SAMPLE DATA. The admins: the handful of people who run the server and the
 // events. Every username must exist in members.ts. Taglines are written as if
-// by each person. `photo` takes a path under /public; without one, the avatar
-// spec is drawn.
+// by each person. `photo` takes a path under /public and wins over the drawn
+// avatar. The two sample photos are generated faces (thispersondoesnotexist.com,
+// StyleGAN2); no real person is depicted. Replace them with real admins' photos,
+// with their consent, before the sample-data notice comes off.
 
 import type { Face } from '../lib/avatar';
 
@@ -23,7 +25,7 @@ export interface Admin {
   photo?: string;
 }
 
-const SKIN = { a: '#c68a5b', b: '#a8693f', c: '#8a5530' };
+const SKIN = { a: '#c68a5b', c: '#8a5530' };
 
 export const ADMINS: Admin[] = [
   {
@@ -33,6 +35,7 @@ export const ADMINS: Admin[] = [
     doesBn: 'শুরু করেছেন, চালিয়ে নিচ্ছেন',
     tagline: 'আমার কাজ মিটিং ছোট রাখা। এখনো পারিনি।',
     avatar: { kind: 'face', face: { skin: SKIN.a, hair: 'long', shirt: '#2f5d8a', bg: '#dfe7ef', glasses: true } },
+    photo: '/team/farhana.webp',
   },
   {
     user: 'shutki_daemon',
@@ -55,6 +58,7 @@ export const ADMINS: Admin[] = [
     doesBn: 'ইভেন্ট',
     tagline: 'I find rooms. If yours is free on a Saturday afternoon, please call me.',
     avatar: { kind: 'face', face: { skin: SKIN.c, hair: 'short', beard: 'moustache', shirt: '#a1452f', bg: '#f0e3dc' } },
+    photo: '/team/sabbir.webp',
   },
   {
     user: 'nusrat',
@@ -70,6 +74,6 @@ export const ADMINS: Admin[] = [
     does: 'Shell Saturday and guides',
     doesBn: 'শেল স্যাটারডে আর গাইড',
     tagline: 'লিনাক্স শিখেছি সিস্টেম ভেঙে ভেঙে। এখন চাই অন্যরা একটু কম ভাঙুক।',
-    avatar: { kind: 'face', face: { skin: SKIN.b, hair: 'side', glasses: true, beard: 'moustache', shirt: '#0f766e', bg: '#dcefec' } },
+    avatar: { kind: 'cat', bg: '#ece6da', fur: '#d08a3c' },
   },
 ];

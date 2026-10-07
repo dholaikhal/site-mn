@@ -8,8 +8,10 @@ are **sample data**; nothing behind "Services" exists yet. The only working back
 interest list. While `SAMPLE_DATA` in `src/data/org.ts` is `true`, every page says so in the
 footer. Turn it off only once the data is real.
 
-Sample data lives in `src/data/members.ts`, `team.ts`, `events.ts`, `org.ts` (ledger, projects,
-contact addresses) and `src/content/logbook/`. Counts shown on the site are computed from these
+Sample data lives in `src/data/members.ts`, `team.ts`, `events.ts`, `org.ts` (projects, contact
+addresses) and `src/content/logbook/`. The two admin photos in `public/team/` are generated
+faces (thispersondoesnotexist.com); no real person is depicted. Swap in real, consented photos
+before turning the sample-data notice off. Counts shown on the site are computed from these
 files, so editing them keeps every page consistent. `COPY-REVIEW.md` records the copy edit.
 
 ## Develop
@@ -64,5 +66,5 @@ the interest list.
 
 - The Bangla home page (`/bn/`) needs review by a native speaker.
 - The code of conduct and acceptable use policy are drafts, marked as such on the pages.
-- The site shows hello@, conduct@, security@ and treasurer@mukto.net (`src/data/org.ts`). Create
+- The site shows hello@, conduct@ and security@mukto.net (`src/data/org.ts`). Create
   them before launch, or change them.
