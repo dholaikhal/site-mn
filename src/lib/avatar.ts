@@ -81,3 +81,16 @@ export function cat(bg: string, fur: string, size = 96): string {
 export function monogram(text: string, bg: string, fg = '#ffffff', size = 96): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="${size}" height="${size}" aria-hidden="true"><rect width="96" height="96" fill="${bg}"/><text x="48" y="61" text-anchor="middle" font-family="Iosevka, ui-monospace, monospace" font-size="38" font-weight="700" fill="${fg}">${text}</text></svg>`;
 }
+
+/** The sunset-over-the-river profile picture half of Bangladesh uses. */
+export function landscape(size = 96): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="${size}" height="${size}" aria-hidden="true"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b26b"/><stop offset="1" stop-color="#e8735a"/></linearGradient></defs><rect width="96" height="60" fill="url(#sky)"/><circle cx="60" cy="52" r="13" fill="#fde3a7"/><rect y="58" width="96" height="38" fill="#4f6f8f"/><path d="M0 62h96M8 70h30M50 74h38M14 82h24" stroke="#f2c38b" stroke-width="1.5" opacity=".7"/><path d="M28 66h30l-5 6H33z" fill="#2b2420"/><path d="M42 66V48l9 14z" fill="#3a302a"/><path d="M84 58c-1-9 0-17 2-24" stroke="#2b2420" stroke-width="2.5" fill="none"/><path d="M86 34c-6-2-11 0-14 4m14-4c5-3 10-2 12 1m-12-1c-2-5-1-9 2-11m-2 11c4 1 7 4 8 8" stroke="#2b2420" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+/** An 8-bit sprite, the default of anyone who grew up on pirated game CDs. */
+export function pixel(color: string, bg: string, size = 96): string {
+  const rows = ['..X..X..', '...XX...', '..XXXX..', '.XX.XX.X', 'XXXXXXXX', 'X.XXXX.X', 'X.X..X.X', '...XX...'];
+  let cells = '';
+  rows.forEach((r, y) => [...r].forEach((c, x) => c === 'X' && (cells += `<rect x="${x + 2}" y="${y + 2}" width="1" height="1"/>`)));
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="${size}" height="${size}" aria-hidden="true" shape-rendering="crispEdges"><rect width="12" height="12" fill="${bg}"/><g fill="${color}">${cells}</g></svg>`;
+}

@@ -1,5 +1,5 @@
 ---
-import { cat, face, identicon, monogram, tux } from '../lib/avatar';
+import { cat, face, identicon, landscape, monogram, pixel, tux } from '../lib/avatar';
 import type { Avatar } from '../data/team';
 
 interface Props {
@@ -17,6 +17,8 @@ if (!photo) {
   else if (avatar.kind === 'face') svg = face(avatar.face, size);
   else if (avatar.kind === 'tux') svg = tux(avatar.bg, size);
   else if (avatar.kind === 'cat') svg = cat(avatar.bg, avatar.fur, size);
+  else if (avatar.kind === 'landscape') svg = landscape(size);
+  else if (avatar.kind === 'pixel') svg = pixel(avatar.color, avatar.bg, size);
   else svg = monogram(avatar.text, avatar.bg, '#f6f7f5', size);
 }
 ---
