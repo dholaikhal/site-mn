@@ -18,9 +18,9 @@ type Row = [user: string, name: string, city: string, joined: string, shell: Mem
 const rows: Row[] = [
   ['shutki_daemon', '', 'Dhaka', '2026-07-20', 'zsh', 1, 14, "if it's down, page me. if it's up, don't touch it"],
   ['kalbaishakhi', '', 'Dhaka', '2026-07-20', 'bash', 0, 3, 'reading auth.log so you don\'t have to'],
-  ['farhana', 'Farhana Rahman', 'Dhaka', '2026-07-20', 'zsh', 1, 6, 'convener. agenda for the next EC meeting is in ~/ec/agenda.md'],
-  ['tanvir', 'Tanvir Ahmed', 'Dhaka', '2026-07-20', 'bash', 1, 4, 'minutes from 2 Oct are up. read them, then complain'],
-  ['arpita', 'Arpita Saha', 'Dhaka', '2026-07-21', 'fish', 1, 2, 'ledger updated every sunday. হিসাব না মিললে আমাকে বলো'],
+  ['farhana', 'Farhana Rahman', 'Dhaka', '2026-07-20', 'zsh', 1, 6, 'planning the year-end adda. ideas welcome on #adda'],
+  ['tanvir', 'Tanvir Ahmed', 'Dhaka', '2026-07-20', 'bash', 1, 4, 'backend at a bank. mostly lurking on #adda'],
+  ['arpita', 'Arpita Saha', 'Dhaka', '2026-07-21', 'fish', 1, 2, 'server money spreadsheet আমার কাছে। হিসাব দেখতে চাইলে বলো'],
   ['sabbir', 'Sabbir Hossain', 'Dhaka', '2026-07-21', 'bash', 0, 1, 'oct 17 room confirmed. singara count: 60'],
   ['nusrat', 'Nusrat Jahan', 'Chattogram', '2026-07-22', 'zsh', 1, 5, 'conduct@ inbox is me. be nice so i get to sleep'],
   ['prottoy', 'Prottoy Das', 'Sylhet', '2026-07-22', 'zsh', 1, 9, 'writing the shell saturday handouts, ch 3 of 6'],

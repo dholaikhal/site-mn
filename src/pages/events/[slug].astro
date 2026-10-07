@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Avatar from '../../components/Avatar.astro';
 import { EVENTS, PROGRAMMES, now } from '../../data/events';
-import { COMMITTEE } from '../../data/team';
+import { ADMINS } from '../../data/team';
 
 export function getStaticPaths() {
   return EVENTS.map((e) => ({ params: { slug: e.slug }, props: { event: e } }));
@@ -13,7 +13,7 @@ const isPast = new Date(e.end) < now;
 const fmt = (o: Intl.DateTimeFormatOptions) => new Date(e.start).toLocaleString('en-GB', { timeZone: 'Asia/Dhaka', ...o });
 const endTime = new Date(e.end).toLocaleString('en-GB', { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit' });
 const programme = PROGRAMMES.find((p) => p.id === e.programme);
-const officer = (u: string) => COMMITTEE.find((o) => o.user === u);
+const officer = (u: string) => ADMINS.find((o) => o.user === u);
 ---
 
 <Base title={e.title} description={e.summary}>

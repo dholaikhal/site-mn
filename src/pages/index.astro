@@ -8,7 +8,7 @@ import MemberWall from '../components/MemberWall.astro';
 import Avatar from '../components/Avatar.astro';
 import { upcoming } from '../data/events';
 import { MEMBERS } from '../data/members';
-import { COMMITTEE } from '../data/team';
+import { ADMINS } from '../data/team';
 import { PROJECTS } from '../data/org';
 ---
 
@@ -62,16 +62,16 @@ import { PROJECTS } from '../data/org';
   <section class="wrap block">
     <div class="head">
       <h2>Who runs it</h2>
-      <a href="/team/">The committee and working groups</a>
+      <a href="/team/">Meet the admins</a>
     </div>
     <ul class="faces">
       {
-        COMMITTEE.map((o) => (
+        ADMINS.map((o) => (
           <li>
             <a href={`/team/#${o.user}`}>
               <Avatar user={o.user} avatar={o.avatar} photo={o.photo} size={72} label={o.name ?? o.user} />
               <span class="who">{o.name ?? `~${o.user}`}</span>
-              <span class="role">{o.role}</span>
+              <span class="role">{o.does}</span>
             </a>
           </li>
         ))

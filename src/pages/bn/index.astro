@@ -8,7 +8,7 @@ import MemberWall from '../../components/MemberWall.astro';
 import Avatar from '../../components/Avatar.astro';
 import { upcoming } from '../../data/events';
 import { MEMBERS } from '../../data/members';
-import { COMMITTEE } from '../../data/team';
+import { ADMINS } from '../../data/team';
 import { bnDigits } from '../../lib/bangla';
 ---
 
@@ -44,16 +44,16 @@ import { bnDigits } from '../../lib/bangla';
   <section class="wrap block">
     <div class="head">
       <h2>যাঁরা চালান</h2>
-      <a href="/team/">কমিটি আর ওয়ার্কিং গ্রুপ</a>
+      <a href="/team/">অ্যাডমিনদের সাথে পরিচয়</a>
     </div>
     <ul class="faces">
       {
-        COMMITTEE.map((o) => (
+        ADMINS.map((o) => (
           <li>
             <a href={`/team/#${o.user}`}>
               <Avatar user={o.user} avatar={o.avatar} photo={o.photo} size={72} label={o.name ?? o.user} />
               <span class="who">{o.name ?? `~${o.user}`}</span>
-              <span class="role">{o.roleBn}</span>
+              <span class="role">{o.doesBn}</span>
             </a>
           </li>
         ))

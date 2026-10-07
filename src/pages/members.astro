@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { MEMBERS, MEMBER_CITIES } from '../data/members';
-import { COMMITTEE } from '../data/team';
+import { ADMINS } from '../data/team';
 import { PROJECTS } from '../data/org';
 import { identicon } from '../lib/avatar';
 
-const roles = new Map(COMMITTEE.map((o) => [o.user, o.role]));
+const admins = new Set(ADMINS.map((a) => a.user));
 const byCity = MEMBER_CITIES.map((c) => ({ c, n: MEMBERS.filter((m) => m.city === c).length })).sort((a, b) => b.n - a.n);
 const shells = ['bash', 'zsh', 'fish', 'nu'].map((s) => ({ s, n: MEMBERS.filter((m) => m.shell === s).length }));
 const pages = MEMBERS.filter((m) => m.page).length;
@@ -68,7 +68,7 @@ const members = [...MEMBERS].sort((a, b) => a.user.localeCompare(b.user));
               <p class="user">
                 <span class="mono">~{m.user}</span>
                 {m.name && <span class="name">{m.name}</span>}
-                {roles.has(m.user) && <a class="role" href={`/team/#${m.user}`}>{roles.get(m.user)}</a>}
+                {admins.has(m.user) && <a class="role" href={`/team/#${m.user}`}>admin</a>}
               </p>
               <p class="facts">
                 {m.city} · joined {joined(m.joined)} · <span class="mono">{m.shell}</span>
