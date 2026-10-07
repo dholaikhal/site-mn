@@ -1,0 +1,95 @@
+---
+import Tilde from '../../layouts/Tilde.astro';
+---
+
+<Tilde user="sadia" title="Sadia's corner" icon="✿" description="my first website">
+  <main>
+    <h1>hi, I'm Sadia 👋</h1>
+    <p>
+      CSE 3rd year, Dhaka. This is my first website ever. I wrote it in nano over SSH the day my
+      account came through, and I've been adding to it since.
+    </p>
+
+    <div class="card">
+      <h2>things I learned this month</h2>
+      <ul>
+        <li><code>display: grid</code> is not scary. <code>grid-template-areas</code> is a little scary.</li>
+        <li><code>chmod 644</code> fixes the 403 every single time.</li>
+        <li>git rebase made my heart stop. Then ~nafis showed me <code>git reflog</code>.</li>
+        <li>You can write CSS without a framework and the page still loads.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>what I'm doing now</h2>
+      <p>Helping ~prottoy teach Shell Saturday #3 on 17 October. I'm doing the grep part. Please come, I need an audience that isn't my cat.</p>
+    </div>
+
+    <div class="card">
+      <h2>my first ever version</h2>
+      <p>Kept as is, because I'm proud of it:</p>
+      <pre>&lt;h1&gt;hello from ~sadia&lt;/h1&gt;
+&lt;p&gt;i just joined mukto.net&lt;/p&gt;</pre>
+      <p class="small">It's in <a href="/members/#projects">sadia/first-site</a>. PRs that make it worse are welcome.</p>
+    </div>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #e0f2f1, #ede7f6);
+    color: #263238;
+    font: 17px/1.6 'Trebuchet MS', system-ui, sans-serif;
+  }
+  main {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 2.4rem;
+    margin: 0 0 0.5rem;
+    color: #4527a0;
+  }
+  .card {
+    background: #ffffffcc;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    box-shadow: 0 2px 0 #b39ddb;
+  }
+  h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.4rem;
+    color: #00796b;
+  }
+  ul {
+    padding-left: 1.2rem;
+    margin: 0;
+  }
+  li {
+    margin-bottom: 0.35rem;
+  }
+  code,
+  pre {
+    font-family: ui-monospace, Menlo, monospace;
+    background: #ede7f6;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+  code {
+    padding: 0 0.3rem;
+  }
+  pre {
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+  }
+  a {
+    color: #4527a0;
+  }
+  .small {
+    font-size: 0.9rem;
+  }
+</style>

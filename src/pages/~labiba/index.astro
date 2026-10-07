@@ -1,0 +1,178 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const progress = [
+  { name: 'GNOME Shell', done: 1840, total: 2210 },
+  { name: 'Nautilus (Files)', done: 912, total: 1004 },
+  { name: 'GNOME Settings', done: 1630, total: 2372 },
+  { name: 'gedit', done: 702, total: 702 },
+];
+const words = [
+  { en: 'Save', options: ['সংরক্ষণ করুন', 'সেভ করুন', 'রাখুন'], pick: 'সংরক্ষণ করুন', why: 'বাকি সব ডেস্কটপে এটাই চলে। নতুন শব্দ শেখানোর চেয়ে মিল রাখা ভালো।' },
+  { en: 'Repository', options: ['রিপোজিটরি', 'ভান্ডার', 'সংগ্রহস্থল'], pick: 'রিপোজিটরি', why: 'যে খোঁজে সে ইংরেজিতেই খোঁজে। ভান্ডার শুনে কেউ গিট বুঝবে না।' },
+  { en: 'Commit', options: ['কমিট', 'অঙ্গীকার'], pick: 'কমিট', why: 'অঙ্গীকার প্রস্তাবটা আসলেই এসেছিল। তিন দিন লেগেছে বাদ দিতে।' },
+  { en: 'Shut down', options: ['বন্ধ করুন', 'শাটডাউন'], pick: 'বন্ধ করুন', why: 'এখানে বাংলাই পরিষ্কার।' },
+];
+---
+
+<Tilde user="labiba" title="labiba · বাংলায় অনুবাদ" icon="অ" description="GNOME-এর বাংলা অনুবাদ, আর কোন শব্দ কেন">
+  <main>
+    <h1><span lang="bn">অনুবাদের খাতা</span></h1>
+    <p class="who">
+      ~labiba. I translate free software into Bangla, mostly GNOME, and argue about single words for
+      longer than is reasonable.
+    </p>
+
+    <h2>GNOME, bn</h2>
+    <ul class="bars">
+      {
+        progress.map((p) => {
+          const pct = Math.round((p.done / p.total) * 100);
+          return (
+            <li>
+              <span class="name">{p.name}</span>
+              <span class="track">
+                <span style={`width:${pct}%`} />
+              </span>
+              <span class="pct">{pct}%</span>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <p class="note">
+      {progress.reduce((s, p) => s + p.total - p.done, 0).toLocaleString('en')} strings to go. Next sprint: 7
+      November, online. Bring a reviewer's patience.
+    </p>
+
+    <h2>Words we fought over</h2>
+    <div class="words">
+      {
+        words.map((w) => (
+          <article>
+            <p class="en">{w.en}</p>
+            <ul lang="bn">
+              {w.options.map((o) => (
+                <li class:list={{ pick: o === w.pick }}>{o}</li>
+              ))}
+            </ul>
+            <p class="why" lang="bn">{w.why}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="note">The full list, 640 words and counting: <a href="/members/#projects">labiba/bn-glossary</a>.</p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fbfaf8;
+    color: #1c1b1a;
+    font: 16px/1.65 'Anek Bangla Variable', system-ui, sans-serif;
+  }
+  main {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin: 0;
+    color: #7c2d12;
+  }
+  .who {
+    max-width: 34rem;
+    color: #57534e;
+  }
+  h2 {
+    font-size: 1.1rem;
+    margin: 2.5rem 0 0.75rem;
+    letter-spacing: 0.01em;
+  }
+  .bars {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 36rem;
+  }
+  .bars li {
+    display: grid;
+    grid-template-columns: 10rem 1fr 3rem;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.2rem 0;
+  }
+  .track {
+    height: 10px;
+    background: #ece7e1;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .track span {
+    display: block;
+    height: 100%;
+    background: #c2410c;
+  }
+  .pct {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #57534e;
+  }
+  .note {
+    color: #57534e;
+    font-size: 0.95rem;
+  }
+  .words {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 1rem;
+  }
+  article {
+    background: #fff;
+    border: 1px solid #ece7e1;
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+  }
+  .en {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.15rem;
+  }
+  article ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.4rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  article li {
+    border: 1px solid #e2dbd2;
+    border-radius: 999px;
+    padding: 0 0.6rem;
+    color: #78716c;
+    text-decoration: line-through;
+  }
+  article li.pick {
+    border-color: #c2410c;
+    color: #7c2d12;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .why {
+    margin: 0;
+    color: #44403c;
+  }
+  a {
+    color: #c2410c;
+  }
+  @media (max-width: 520px) {
+    .bars li {
+      grid-template-columns: 7rem 1fr 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,112 @@
+---
+import Tilde from '../../layouts/Tilde.astro';
+
+const posts = [
+  { date: '2026-09-30', title: 'Writing runbooks for a server run by volunteers', blurb: 'What changes when nobody is paid to wake up. Short version: fewer alerts, better notes.' },
+  { date: '2026-09-02', title: 'My first on-call week in Berlin', blurb: 'Three pages, two of them at 4am, one of them my own fault.' },
+  { date: '2026-08-20', title: 'Fuchka in Berlin: a field report', blurb: 'I found one place. It was fine. It was not fuchka.' },
+  { date: '2026-08-12', title: 'Why I joined a server 7,000 km away', blurb: 'Because #adda at 11pm Berlin time is 3am Dhaka time and somebody is always awake.' },
+];
+---
+
+<Tilde user="zubair" title="Zubair Alam" icon="Z" description="SRE in Berlin, writes about on-call and home">
+  <main>
+    <header>
+      <h1>Zubair Alam</h1>
+      <p>SRE in Berlin. From Dhaka. I write about on-call, small infrastructure, and missing home.</p>
+      <p class="clocks">
+        <span>Berlin <b data-tz="Europe/Berlin">--:--</b></span>
+        <span>Dhaka <b data-tz="Asia/Dhaka">--:--</b></span>
+      </p>
+    </header>
+
+    <ol class="posts">
+      {
+        posts.map((p) => (
+          <li>
+            <time datetime={p.date}>
+              {new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+            <h2>{p.title}</h2>
+            <p>{p.blurb}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="foot">
+      I help the mukto.net infrastructure group and write the
+      <a href="/members/#projects">on-call handbook</a>. If you're an ops apprentice, ping me on IRC,
+      whatever the time.
+    </p>
+  </main>
+</Tilde>
+
+<script>
+  const tick = () => {
+    for (const el of document.querySelectorAll<HTMLElement>('[data-tz]'))
+      el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: el.dataset.tz });
+  };
+  tick();
+  setInterval(tick, 30_000);
+</script>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fff;
+    color: #111;
+    font: 19px/1.65 Charter, 'Bitstream Charter', Georgia, serif;
+  }
+  main {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 4rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin: 0;
+  }
+  header p {
+    color: #555;
+    margin: 0.3rem 0;
+  }
+  .clocks {
+    display: flex;
+    gap: 1.5rem;
+    font: 14px/1.4 system-ui, sans-serif;
+  }
+  .clocks b {
+    font-variant-numeric: tabular-nums;
+    color: #111;
+  }
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 3rem 0;
+  }
+  .posts li {
+    margin-bottom: 2rem;
+  }
+  time {
+    font: 13px/1.4 system-ui, sans-serif;
+    color: #888;
+  }
+  .posts h2 {
+    font-size: 1.25rem;
+    margin: 0.2rem 0;
+  }
+  .posts p {
+    margin: 0;
+    color: #444;
+  }
+  a {
+    color: #111;
+  }
+  .foot {
+    font-size: 0.95rem;
+    color: #555;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const bookmarklet = `javascript:(()=>{const t=document.title,u=location.href,d=new Date().toISOString().slice(0,10),s=location.hostname.replace(/^www\\./,'');prompt('সূত্র কপি করুন','<ref>{{cite web |url='+u+' |title='+t+' |website='+s+' |access-date='+d+'}}</ref>')})()`;
+---
+
+<Tilde user="mithila" title="Mithila Roy · bn.wikipedia" icon="W" description="bn.wikipedia editing, and a bookmarklet for Bangla citations">
+  <main>
+    <h1>Mithila Roy</h1>
+    <p class="sub">bn.wikipedia editor since 2021, 2,300-odd edits. Mostly fixing citations nobody else wants to fix.</p>
+
+    <section class="tool">
+      <h2>bn-cite</h2>
+      <p>
+        Drag this to your bookmarks bar. On any Bangla newspaper article, click it, and you get a
+        ready-made citation for bn.wikipedia with the URL, title, site and today's date filled in.
+      </p>
+      <p><a class="bm" href={bookmarklet}>📎 bn-cite</a></p>
+      <p class="small">Source: <a href="/members/#projects">mithila/bn-cite</a>. Check the title before you paste; some sites put the paper's name in it.</p>
+    </section>
+
+    <section>
+      <h2>Editing bn.wikipedia, in one page</h2>
+      <ol>
+        <li>Make an account. Editing without one shows your IP to everyone.</li>
+        <li>Start by fixing one thing in an article you already know well.</li>
+        <li>Every fact needs a source. A newspaper link is fine. A Facebook post is not.</li>
+        <li>Write in plain, neutral Bangla. No "সর্বশ্রেষ্ঠ", no "অসাধারণ".</li>
+        <li>Stuck? Ask on the article's talk page, or ask me on IRC.</li>
+      </ol>
+    </section>
+
+    <p class="small">
+      Every few months a few of us do an edit-a-thon after Shell Saturday. Next one: when someone
+      brings snacks.
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #f8f9fa;
+    color: #202122;
+    font: 16px/1.65 'Anek Bangla Variable', sans-serif;
+  }
+  main {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+    background: #fff;
+    border: 1px solid #c8ccd1;
+    border-top: 0;
+    border-bottom: 0;
+    min-height: 70vh;
+  }
+  h1 {
+    font-family: 'Linux Libertine', Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 2.2rem;
+    border-bottom: 1px solid #a2a9b1;
+    margin: 0 0 0.25rem;
+  }
+  h2 {
+    font-family: 'Linux Libertine', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #c8ccd1;
+    margin: 2rem 0 0.5rem;
+  }
+  .sub {
+    color: #54595d;
+  }
+  .tool {
+    background: #eaf3ff;
+    border: 1px solid #a3d3ff;
+    padding: 0.25rem 1.25rem 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .tool h2 {
+    border: 0;
+    margin-top: 0.75rem;
+  }
+  .bm {
+    display: inline-block;
+    background: #36c;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  a {
+    color: #36c;
+  }
+  .small {
+    font-size: 0.9rem;
+    color: #54595d;
+  }
+</style>

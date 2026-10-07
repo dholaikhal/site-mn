@@ -1,0 +1,133 @@
+---
+import '@fontsource/iosevka/400.css';
+import '@fontsource/iosevka/700.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const commands = [
+  ['!next', 'the next mukto.net event, with date and RSVP count'],
+  ['!seen <nick>', 'when someone last spoke, and where'],
+  ['!kacchi', 'settles kacchi vs biryani. the answer does not change'],
+  ['!tea', 'puts a cup of tea in the channel. purely emotional support'],
+  ['!up', 'pings the server, the forge and the mirror, says which are slow'],
+  ['!bn <word>', 'looks the word up in labiba/bn-glossary'],
+];
+---
+
+<Tilde user="kacchi_overflow" title="biryani-bot · ~kacchi_overflow" icon="🍛" description="the bot in #adda">
+  <main>
+    <header>
+      <h1>biryani-bot</h1>
+      <p>the bot in <b>#adda</b>. written by ~kacchi_overflow, broken by ~tokai, fixed again by me.</p>
+    </header>
+
+    <section class="log" aria-label="sample IRC log">
+      <p><span class="t">21:04</span> <span class="n a">sadia</span> !next</p>
+      <p><span class="t">21:04</span> <span class="n b">biryani-bot</span> Sat 17 Oct 15:00, Shell Saturday #3: pipes and your first script. 47/60 going.</p>
+      <p><span class="t">21:05</span> <span class="n c">tokai</span> biryani is objectively better</p>
+      <p><span class="t">21:05</span> <span class="n a">sadia</span> !kacchi</p>
+      <p><span class="t">21:05</span> <span class="n b">biryani-bot</span> kacchi. this has been decided. please move on.</p>
+      <p><span class="t">21:05</span> <span class="n c">tokai</span> i'm filing a bug</p>
+    </section>
+
+    <h2>commands</h2>
+    <table>
+      <tbody>
+        {
+          commands.map(([c, what]) => (
+            <tr>
+              <th scope="row"><code>{c}</code></th>
+              <td>{what}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2>running your own</h2>
+    <p>
+      it's 300 lines of python and one sqlite file. clone <a href="/members/#projects">kacchi_overflow/biryani-bot</a>,
+      set your nick and channel in <code>config.toml</code>, and ask in #ops before you connect it to
+      our server.
+    </p>
+    <p class="small">!kacchi used 214 times since august. answer changed 0 times.</p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fff8ec;
+    color: #3a2a17;
+    font: 16px/1.65 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  main {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 2.6rem;
+    margin: 0;
+    color: #b45309;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 1.2rem;
+    margin: 2rem 0 0.6rem;
+  }
+  .log {
+    background: #2a1f14;
+    color: #f5e6d0;
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    font: 14px/1.6 'Iosevka', ui-monospace, monospace;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+  }
+  .log p {
+    margin: 0;
+  }
+  .t {
+    color: #8a7560;
+  }
+  .n {
+    font-weight: 700;
+  }
+  .n.a {
+    color: #7dd3fc;
+  }
+  .n.b {
+    color: #fbbf24;
+  }
+  .n.c {
+    color: #f9a8d4;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.45rem 1rem 0.45rem 0;
+    border-bottom: 1px solid #f1dfc1;
+    vertical-align: top;
+  }
+  th {
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  code {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    background: #fbe7c6;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+  }
+  a {
+    color: #b45309;
+  }
+  .small {
+    font-size: 0.85rem;
+    color: #8a7560;
+  }
+</style>

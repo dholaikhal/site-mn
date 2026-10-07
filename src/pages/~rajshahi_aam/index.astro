@@ -1,0 +1,125 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+// Rough arrival dates in Rajshahi markets. They move every year with the weather.
+const mangoes = [
+  { name: 'গোপালভোগ', en: 'Gopalbhog', when: '2027-05-20', note: 'first of the season, sweet, gone in two weeks' },
+  { name: 'হিমসাগর', en: 'Himsagar', when: '2027-06-01', note: 'the one everyone fights about' },
+  { name: 'ল্যাংড়া', en: 'Langra', when: '2027-06-10', note: 'green even when ripe. trust it' },
+  { name: 'আম্রপালি', en: 'Amrapali', when: '2027-06-25', note: 'small tree, huge yield, my uncle grows them' },
+  { name: 'ফজলি', en: 'Fazli', when: '2027-07-05', note: 'big as your head. end of the season' },
+];
+---
+
+<Tilde user="rajshahi_aam" lang="en" title="🥭 ~rajshahi_aam" icon="🥭" description="a mango season countdown, from Rajshahi">
+  <main>
+    <p class="hello">~rajshahi_aam, Rajshahi</p>
+    <h1>
+      <span id="days">—</span> days<br />until mango season
+    </h1>
+    <p class="sub">Counting to the first Gopalbhog, roughly 20 May. Until then, I code.</p>
+
+    <ol class="season">
+      {
+        mangoes.map((m) => (
+          <li data-when={m.when}>
+            <span class="bn" lang="bn">{m.name}</span>
+            <span class="en">{m.en}</span>
+            <span class="date">{new Date(m.when).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+            <span class="note">{m.note}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <h2>Meanwhile</h2>
+    <ul>
+      <li>Learning Go by rewriting my uncle's orchard spreadsheet as a tiny web app.</li>
+      <li>Helping set up the <a href="/events/install-fest-rajshahi/">Rajshahi install-fest</a> on 5 December. Come.</li>
+      <li>Looking for other people in Rajshahi who write code. Say hi in <code>#adda</code>.</li>
+    </ul>
+  </main>
+</Tilde>
+
+<script>
+  const first = new Date('2027-05-20T00:00:00+06:00').getTime();
+  const days = Math.max(0, Math.ceil((first - Date.now()) / 86400000));
+  document.querySelector('#days')!.textContent = String(days);
+</script>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fff7d6;
+    color: #2f3b12;
+    font: 17px/1.6 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  .hello {
+    color: #6b7d2a;
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    line-height: 1.05;
+    margin: 0.4rem 0 0.6rem;
+    letter-spacing: -0.03em;
+  }
+  #days {
+    color: #e08a00;
+  }
+  .sub {
+    color: #55621f;
+  }
+  .season {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    border-top: 2px solid #2f3b12;
+  }
+  .season li {
+    display: grid;
+    grid-template-columns: 7rem 6rem 4rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #ecdca0;
+  }
+  .bn {
+    font-family: 'Anek Bangla Variable', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+  .en,
+  .date {
+    color: #6b7d2a;
+    font-size: 0.9rem;
+  }
+  .note {
+    font-size: 0.95rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+  a {
+    color: #b45309;
+  }
+  code {
+    background: #fdeaa6;
+    padding: 0 0.3rem;
+    border-radius: 3px;
+  }
+  @media (max-width: 560px) {
+    .season li {
+      grid-template-columns: 6rem 1fr auto;
+    }
+    .note {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

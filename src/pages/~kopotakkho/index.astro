@@ -1,0 +1,42 @@
+---
+import Tilde from '../../layouts/Tilde.astro';
+---
+
+<Tilde user="kopotakkho" lang="bn" title="~kopotakkho" icon="〰" description="যশোর থেকে আমার প্রথম পেজ">
+  <main>
+    <h1>~kopotakkho</h1>
+    <p>যশোর থেকে। এটা আমার প্রথম ওয়েব পেজ। দেখতে খারাপ, জানি। তবু আমার।</p>
+    <p>
+      নামটা কপোতাক্ষ নদ থেকে। আমাদের বাড়ি থেকে হেঁটে দশ মিনিট। মধুসূদন দত্তের সেই নদ, ছোটবেলায়
+      সবাইকে কবিতাটা মুখস্থ করতে হতো।
+    </p>
+
+    <h2>এই সপ্তাহে শিখলাম</h2>
+    <ul>
+      <li><code>ssh</code> দিয়ে লগইন করা</li>
+      <li><code>nano</code> থেকে বের হওয়া (Ctrl+X, অনেকক্ষণ খুঁজেছি)</li>
+      <li><code>chmod 644</code>, নাহলে পেজটা 403 দেখায়</li>
+    </ul>
+
+    <h2>পরের কাজ</h2>
+    <ul>
+      <li>একটা CSS ফাইল যোগ করা</li>
+      <li>যশোরের কেউ mukto.net-এ থাকলে খুঁজে বের করা</li>
+    </ul>
+
+    <hr />
+    <p><small>শেষ বদলেছি: ৫ অক্টোবর</small></p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    padding: 0 1rem;
+    font-family: system-ui, sans-serif;
+  }
+  main {
+    max-width: 40rem;
+    margin: 2rem auto 0;
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+---
+
+<Tilde user="farhana" lang="bn" title="ফারহানা" icon="🌿" description="ফারহানার পাতা">
+  <main>
+    <img src="/team/farhana.webp" alt="" width="96" height="96" />
+    <h1>ফারহানা</h1>
+    <p class="lead">
+      একটা প্রাইভেট ইউনিভার্সিটিতে অপারেটিং সিস্টেম পড়াই। ক্লাসে যা পড়াই, সেটা হাতে-কলমে করার জায়গা
+      খুঁজতে গিয়েই mukto.net শুরু।
+    </p>
+
+    <section>
+      <h2>এখন</h2>
+      <ul>
+        <li>ডিসেম্বরের বছর-শেষের আড্ডার প্ল্যান। কিছু বলার থাকলে <code>#adda</code>-তে।</li>
+        <li>রাজশাহীর ইনস্টল-ফেস্টের জন্য ২০টা USB ড্রাইভ খুঁজছি।</li>
+        <li>পড়ছি: <em>Operating Systems: Three Easy Pieces</em>, তৃতীয়বার, এবার ছাত্রদের সাথে।</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>ছাত্রদের জন্য</h2>
+      <p>
+        তোমাদের অ্যাসাইনমেন্টের জন্য mukto.net-এ অ্যাকাউন্ট চাইলে ক্লাসের পরে বলো। শর্ত একটাই: সার্ভারে
+        fork bomb চালানো যাবে না। গত সেমিস্টারে একজন চালিয়েছিল।
+      </p>
+    </section>
+
+    <section>
+      <h2>পাবেন যেখানে</h2>
+      <ul class="links">
+        <li>IRC: <code>farhana</code>, <code>#adda</code> চ্যানেলে</li>
+        <li>গিট: <a href="/members/#projects">git.mukto.net/farhana</a></li>
+        <li>শনিবার বিকেলে সাধারণত শেল স্যাটারডেতে</li>
+      </ul>
+    </section>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #f3f1ec;
+    color: #2b2a27;
+    font: 18px/1.8 'Anek Bangla Variable', system-ui, sans-serif;
+  }
+  main {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.25rem 1rem;
+  }
+  img {
+    border-radius: 50%;
+    display: block;
+  }
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin: 1rem 0 0.25rem;
+    line-height: 1.3;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: #55524b;
+  }
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3d6b4f;
+    margin: 2.25rem 0 0.25rem;
+  }
+  ul {
+    padding-left: 1.1rem;
+  }
+  li {
+    margin-bottom: 0.3rem;
+  }
+  a {
+    color: #3d6b4f;
+  }
+  code {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    font-size: 0.85em;
+    background: #e6e2d8;
+    padding: 0.05em 0.35em;
+    border-radius: 3px;
+  }
+</style>

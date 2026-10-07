@@ -84,7 +84,11 @@ const LANG_COLOR: Record<string, string> = {
               <p class="plan">
                 <span class="mono k">Plan:</span> {m.plan || <span class="none">No plan.</span>}
               </p>
-              {m.page && <p class="page mono">mukto.net/~{m.user}</p>}
+              {m.page && (
+                <p class="page mono">
+                  <a href={`/~${m.user}/`}>mukto.net/~{m.user}</a>
+                </p>
+              )}
             </div>
           </li>
         ))

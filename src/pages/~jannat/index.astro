@@ -1,0 +1,118 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import '@fontsource/iosevka/400.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const log = [
+  { day: 1, what: 'print("hello"). He typed it with one finger and grinned for five minutes.' },
+  { day: 3, what: 'Variables. He named every one of them after cricketers.' },
+  { day: 6, what: 'if/else. A "how old are you" program. He set the cut-off for "old" at 25.' },
+  { day: 9, what: 'Loops. A multiplication table up to 20, because his school stops at 10.' },
+  { day: 14, what: 'His first real program, below. He showed it to our whole family at dinner.' },
+];
+---
+
+<Tilde user="jannat" title="teaching rafi python" icon="🐍" description="teaching my little brother Python on mukto.net">
+  <main>
+    <h1>Teaching Rafi Python</h1>
+    <p class="intro">
+      I'm Jannat. My brother Rafi is 12 and wanted to "make a game". He's too young for his own
+      account, so he sits next to me, his files live in <code>~jannat/rafi</code>, and we do 30
+      minutes after his homework. This is the log.
+    </p>
+
+    <ul class="log">
+      {
+        log.map((l) => (
+          <li>
+            <span class="day">day {l.day}</span>
+            <span>{l.what}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>Day 14: সংখ্যা ধরো</h2>
+    <pre><code>import random
+
+number = random.randint(1, 50)
+tries = 0
+print("১ থেকে ৫০ এর মধ্যে একটা সংখ্যা ভেবেছি। ধরো তো!")
+
+while True:
+    guess = int(input("তোমার অনুমান: "))
+    tries += 1
+    if guess &lt; number:
+        print("আরো বড়!")
+    elif guess &gt; number:
+        print("আরো ছোট!")
+    else:
+        print(f"ঠিক! {"{"}tries{"}"} বারে পারলে।")
+        break</code></pre>
+    <p class="small">
+      Run it yourself: <code>python3 ~jannat/rafi/guess.py</code> on mukto.net. Next week: lists, and
+      a hangman game with Bangla words.
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fdfaf5;
+    color: #2d2a26;
+    font: 17px/1.7 'Anek Bangla Variable', system-ui, sans-serif;
+  }
+  main {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 2.4rem;
+    margin: 0 0 0.5rem;
+    color: #3b6ea5;
+    line-height: 1.2;
+  }
+  .intro {
+    color: #57534e;
+  }
+  .log {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .log li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #e7dfd2;
+  }
+  .day {
+    font: 14px/1.9 'Iosevka', ui-monospace, monospace;
+    color: #3b6ea5;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid #e7dfd2;
+    border-left: 4px solid #f2c94c;
+    padding: 1rem;
+    overflow-x: auto;
+    border-radius: 4px;
+  }
+  pre code {
+    font: 14px/1.6 'Iosevka', 'Anek Bangla Variable', ui-monospace, monospace;
+  }
+  code {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    font-size: 0.9em;
+  }
+  .small {
+    font-size: 0.95rem;
+    color: #57534e;
+  }
+</style>

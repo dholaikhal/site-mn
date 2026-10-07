@@ -1,0 +1,110 @@
+---
+import '@fontsource/iosevka/400.css';
+import '@fontsource/iosevka/700.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const machines = [
+  { name: 'pahar', hw: 'Dell OptiPlex 7040, i5-6500, 16G, bought off Bikroy for ৳9,500', runs: 'Proxmox: Nextcloud, Jellyfin, Forgejo mirror' },
+  { name: 'nodi', hw: 'Raspberry Pi 4, 4G', runs: 'Pi-hole, WireGuard, Uptime Kuma' },
+  { name: 'ghat', hw: 'TP-Link Archer C6 on OpenWrt', runs: 'the router. VLAN for the smart plugs I don\'t trust' },
+  { name: 'shishi', hw: 'two 2TB disks in a USB dock', runs: 'restic backups, plus a copy at my cousin\'s place in Halishahar' },
+];
+const lessons = [
+  'Buy the UPS before the second hard drive.',
+  'Write down the router password before you flash OpenWrt.',
+  'A Nextcloud nobody in the family uses is just a hobby. Which is fine.',
+];
+---
+
+<Tilde user="ctg_root" title="~ctg_root homelab" icon="⌂" description="a homelab in Chattogram">
+  <main>
+    <h1>homelab, chattogram</h1>
+    <p class="sub">
+      ~ctg_root. what's running in the corner of my room in Agrabad, and what broke getting there.
+    </p>
+
+    <div class="table">
+      {
+        machines.map((m) => (
+          <div class="row">
+            <p class="name">{m.name}</p>
+            <p class="hw">{m.hw}</p>
+            <p class="runs">{m.runs}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2>three things i learned</h2>
+    <ol>{lessons.map((l) => <li>{l}</li>)}</ol>
+
+    <h2>self-hosting meetup #2</h2>
+    <p>
+      #1 was in Agrabad in August, 29 people. Slides are in <a href="/members/#projects">ctg_root/selfhost-1</a>.
+      Dhaka gets #2 on 20 November. Chattogram #3 needs a room. If you have one, find me on IRC.
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #f2f4f3;
+    color: #1b2421;
+    font: 15px/1.6 'Iosevka', ui-monospace, monospace;
+  }
+  main {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  .sub {
+    color: #5a6a64;
+  }
+  h2 {
+    font-size: 1rem;
+    margin: 2rem 0 0.5rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .table {
+    margin-top: 1.5rem;
+    border: 2px solid #1b2421;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 6rem 1.4fr 1fr;
+    border-bottom: 1px solid #c3ccc8;
+  }
+  .row:last-child {
+    border-bottom: 0;
+  }
+  .row p {
+    margin: 0;
+    padding: 0.6rem 0.8rem;
+  }
+  .name {
+    font-weight: 700;
+    background: #1b2421;
+    color: #9fe3c0;
+  }
+  .runs {
+    border-left: 1px dashed #c3ccc8;
+  }
+  a {
+    color: #0b6e4f;
+  }
+  @media (max-width: 640px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .runs {
+      border-left: 0;
+      border-top: 1px dashed #c3ccc8;
+    }
+  }
+</style>

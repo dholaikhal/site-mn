@@ -1,0 +1,142 @@
+---
+import '@fontsource/iosevka/400.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const services = [
+  ['sshd', 'ok', 'OpenSSH, keys only'],
+  ['nginx', 'ok', '~/public_html, 18 sites'],
+  ['forgejo', 'ok', 'git.mukto.net'],
+  ['ergo', 'ok', 'irc.mukto.net, 6697 tls'],
+  ['backups', 'ok', 'last run 03:10, 4.1 GB, restore tested 2 Oct'],
+  ['mail', 'no', 'not running. not soon either'],
+];
+const log = [
+  ['2026-10-02', 'quota 2G → 5G. 40/49 accounts under 500M, nobody was close'],
+  ['2026-09-24', 'forgejo 9.x. 4 min downtime, sorry #adda'],
+  ['2026-09-11', 'fail2ban was banning the bdix mirror probe. whitelisted it'],
+  ['2026-08-29', 'moved backups to the second box. encrypted with age before they leave'],
+  ['2026-08-15', 'ergo replaces the old ircd. history, tls, saner config'],
+  ['2026-07-20', 'first boot. four accounts. it works'],
+];
+---
+
+<Tilde user="shutki_daemon" icon="▣" description="status of the box, maintained by the person who gets paged">
+  <main>
+    <pre class="prompt">shutki_daemon@mukto:~$ ./status</pre>
+    <h1>the box</h1>
+    <p class="sub">debian stable · 8 cores · 32G · 1T nvme · badda, dhaka</p>
+
+    <table>
+      <tbody>
+        {
+          services.map(([name, state, note]) => (
+            <tr>
+              <td class={`state ${state}`}>{state === 'ok' ? '●' : '○'}</td>
+              <th scope="row">{name}</th>
+              <td>{note}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2>maintenance</h2>
+    <p>tuesdays 02:00–03:00 bst, if needed. announced in #ops the day before.</p>
+
+    <h2>changelog</h2>
+    <ul class="log">
+      {
+        log.map(([d, what]) => (
+          <li>
+            <time>{d}</time> {what}
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>asking me for things</h2>
+    <ul>
+      <li>packages: ask in #ops. if it's in debian, probably yes</li>
+      <li>a port, a daemon, a cron job that runs all day: ask first, explain why</li>
+      <li>root: no</li>
+    </ul>
+    <p class="sub">config for all of this is public: <a href="/members/#projects">shutki_daemon/mukto-infra</a></p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #0f1311;
+    color: #c9d4cc;
+    font: 15px/1.6 'Iosevka', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  main {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 0;
+  }
+  a {
+    color: #7fd1a6;
+  }
+  .prompt {
+    color: #6b7a71;
+    margin: 0 0 1rem;
+    white-space: pre-wrap;
+  }
+  h1 {
+    color: #fff;
+    font-size: 1.6rem;
+    margin: 0;
+  }
+  h2 {
+    color: #fff;
+    font-size: 1rem;
+    margin: 2rem 0 0.5rem;
+  }
+  h2::before {
+    content: '## ';
+    color: #6b7a71;
+  }
+  .sub {
+    color: #6b7a71;
+    margin-top: 0.2rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  td,
+  th {
+    text-align: left;
+    padding: 0.35rem 1rem 0.35rem 0;
+    border-bottom: 1px solid #1f2925;
+    font-weight: 400;
+    vertical-align: top;
+  }
+  th {
+    color: #fff;
+    width: 6rem;
+  }
+  .state {
+    width: 1rem;
+  }
+  .state.ok {
+    color: #5fd38d;
+  }
+  .state.no {
+    color: #6b7a71;
+  }
+  .log {
+    list-style: none;
+    padding: 0;
+  }
+  .log li {
+    padding: 0.2rem 0;
+  }
+  time {
+    color: #6b7a71;
+    margin-right: 0.6rem;
+  }
+</style>

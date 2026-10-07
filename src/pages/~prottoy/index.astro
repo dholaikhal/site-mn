@@ -1,0 +1,141 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import '@fontsource/iosevka/400.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const sessions = [
+  { n: 1, title: 'ঘোরাফেরা', en: 'getting around', topics: 'pwd, ls, cd, man, tab দিয়ে নাম পূরণ', done: true },
+  { n: 2, title: 'ফাইল আর অনুমতি', en: 'files and permissions', topics: 'chmod, chown, nano, vim থেকে বের হওয়া', done: true },
+  { n: 3, title: 'পাইপ আর প্রথম স্ক্রিপ্ট', en: 'pipes and your first script', topics: '|, >, grep, sort, uniq, #!/bin/bash', done: false },
+  { n: 4, title: 'প্রসেস', en: 'processes', topics: 'ps, top, kill, jobs, tmux', done: false },
+  { n: 5, title: 'নেটওয়ার্ক', en: 'networking', topics: 'ssh config, scp, curl, dig', done: false },
+  { n: 6, title: 'নিজের সার্ভার', en: 'your own server', topics: 'systemd, nginx, একটা ছোট সার্ভিস চালানো', done: false },
+];
+---
+
+<Tilde user="prottoy" lang="bn" title="শেল স্যাটারডে · ~prottoy" icon="$" description="শেল স্যাটারডের হ্যান্ডআউট আর নোট">
+  <main>
+    <header>
+      <p class="kicker">~prottoy</p>
+      <h1>শেল স্যাটারডে</h1>
+      <p>প্রতি মাসের তৃতীয় শনিবার, বিকেল তিনটা। ছয় পর্বের কোর্স, শূন্য থেকে নিজের সার্ভার পর্যন্ত।</p>
+    </header>
+
+    <ol class="sessions">
+      {
+        sessions.map((s) => (
+          <li class:list={{ done: s.done }}>
+            <span class="n">{s.n}</span>
+            <div>
+              <h2>
+                {s.title} <span lang="en">{s.en}</span>
+              </h2>
+              <p class="topics" lang="en">{s.topics}</p>
+              <p class="state">{s.done ? 'হ্যান্ডআউট তৈরি' : s.n === 3 ? '১৭ অক্টোবর' : 'লিখছি'}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <h2 class="sec">আজকের টিপ</h2>
+    <pre><code><span class="c"># শেষ কমান্ডটা sudo দিয়ে আবার চালাতে</span>
+sudo !!
+
+<span class="c"># কোন ফোল্ডার সবচেয়ে বেশি জায়গা খাচ্ছে</span>
+du -sh ~/* | sort -h | tail -5</code></pre>
+
+    <p class="foot">
+      হ্যান্ডআউটগুলো CC BY-SA, <a href="/members/#projects">prottoy/shell-saturday</a>-এ। ভুল পেলে PR দিন,
+      বানান ভুল হলেও।
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fffdf7;
+    color: #222;
+    font: 17px/1.75 'Anek Bangla Variable', system-ui, sans-serif;
+  }
+  main {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  .kicker {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    color: #b45309;
+    margin: 0;
+  }
+  h1 {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    margin: 0.2rem 0 0.5rem;
+  }
+  .sessions {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    border-left: 3px solid #f2d7a6;
+  }
+  .sessions li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0 0.6rem 1rem;
+    position: relative;
+  }
+  .n {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    font-weight: 700;
+    color: #b45309;
+    min-width: 1.2rem;
+  }
+  .sessions h2 {
+    font-size: 1.15rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .sessions h2 span {
+    font-weight: 400;
+    color: #8a7f6a;
+    font-size: 0.9rem;
+    margin-left: 0.3rem;
+  }
+  .topics {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0.15rem 0 0;
+  }
+  .state {
+    font-size: 0.85rem;
+    margin: 0;
+    color: #b45309;
+  }
+  .done .state {
+    color: #15803d;
+  }
+  .sec {
+    font-size: 1.2rem;
+  }
+  pre {
+    background: #1f1d1a;
+    color: #f3ead8;
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font: 14px/1.6 'Iosevka', ui-monospace, monospace;
+  }
+  .c {
+    color: #a59c8a;
+  }
+  a {
+    color: #b45309;
+  }
+  .foot {
+    font-size: 0.95rem;
+    color: #555;
+  }
+</style>

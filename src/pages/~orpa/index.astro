@@ -1,0 +1,98 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const posters = [
+  { n: '#1', title: 'ঘোরাফেরা', sub: 'getting around', date: '18.07', bg: '#1d3557', fg: '#f1faee', accent: '#e63946', shape: 'stairs' },
+  { n: '#2', title: 'অনুমতি', sub: 'permissions', date: '15.08', bg: '#f4d35e', fg: '#1b1b1b', accent: '#0d3b66', shape: 'grid' },
+  { n: 'SFD', title: 'মুক্ত সফটওয়্যার দিবস', sub: 'software freedom day', date: '19.09', bg: '#2a9d8f', fg: '#fff', accent: '#e9c46a', shape: 'circles' },
+  { n: '#3', title: 'পাইপ', sub: 'pipes', date: '17.10', bg: '#f1ece4', fg: '#111', accent: '#d62828', shape: 'pipes' },
+];
+---
+
+<Tilde user="orpa" title="orpa / posters" icon="◐" description="posters for mukto.net events">
+  <main>
+    <header>
+      <h1>orpa</h1>
+      <p>Design student. I make the posters for mukto.net events. Type is Anek Bangla, patterns sometimes from ~jamdani's script.</p>
+    </header>
+
+    <ul class="wall">
+      {
+        posters.map((p) => (
+          <li>
+            <svg viewBox="0 0 300 420" role="img" aria-label={`Poster: Shell Saturday ${p.n}, ${p.sub}`} style={`background:${p.bg}`}>
+              {p.shape === 'stairs' &&
+                [0, 1, 2, 3, 4].map((i) => <rect x={30 + i * 48} y={250 - i * 40} width="48" height={40 + i * 40} fill={i % 2 ? p.accent : p.fg} opacity="0.9" />)}
+              {p.shape === 'grid' &&
+                Array.from({ length: 9 }, (_, i) => (
+                  <text x={45 + (i % 3) * 80} y={90 + Math.floor(i / 3) * 70} font-size="38" font-family="ui-monospace,monospace" fill={i === 4 ? p.accent : p.fg}>
+                    {'rwx'[i % 3]}
+                  </text>
+                ))}
+              {p.shape === 'circles' &&
+                [0, 1, 2, 3].map((i) => <circle cx="150" cy="170" r={110 - i * 25} fill="none" stroke={i % 2 ? p.accent : p.fg} stroke-width="10" />)}
+              {p.shape === 'pipes' && (
+                <g fill="none" stroke-width="16" stroke-linecap="round">
+                  <path d="M20 90H140V180H260" stroke={p.fg} />
+                  <path d="M40 140H100V240H280" stroke={p.accent} />
+                  <path d="M20 200H180V270" stroke={p.fg} />
+                </g>
+              )}
+              <text x="24" y="352" font-family="Anek Bangla Variable, sans-serif" font-weight="700" font-size={p.title.length > 10 ? 26 : 40} fill={p.fg}>{p.title}</text>
+              <text x="24" y="382" font-family="system-ui, sans-serif" font-size="14" fill={p.fg} opacity="0.8">
+                {p.n === 'SFD' ? p.sub : `shell saturday ${p.n} · ${p.sub}`}
+              </text>
+              <text x="276" y="40" text-anchor="end" font-family="ui-monospace, monospace" font-size="16" fill={p.fg}>{p.date}</text>
+              <text x="24" y="40" font-family="ui-monospace, monospace" font-size="16" fill={p.fg}>mukto.net</text>
+            </svg>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="small">
+      Need a poster for your event? Ask me on IRC, two weeks ahead please. Files are CC BY-SA, take them.
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #111;
+    color: #eee;
+    font: 16px/1.6 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  main {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: clamp(3rem, 12vw, 7rem);
+    line-height: 0.9;
+    margin: 0;
+    letter-spacing: -0.05em;
+  }
+  header p {
+    max-width: 30rem;
+    color: #aaa;
+  }
+  .wall {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: 1.25rem;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .small {
+    color: #aaa;
+    font-size: 0.9rem;
+  }
+</style>

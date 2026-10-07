@@ -1,0 +1,90 @@
+---
+import '@fontsource/iosevka/400.css';
+import Tilde from '../../layouts/Tilde.astro';
+---
+
+<Tilde user="anika" title="khulna-aqi · ~anika" icon="◌" description="hourly air quality for Khulna, and how it's collected">
+  <main>
+    <p class="crumb">~anika / projects / khulna-aqi</p>
+    <h1>Khulna air, every hour</h1>
+    <p class="lead">
+      I'm Anika, a civil engineering student in Khulna. The nearest public air monitor publishes
+      readings on a web page nobody checks. This project copies them every hour, keeps the history,
+      and draws a chart people can actually read.
+    </p>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>cron</b> runs a Python script at five past every hour on mukto.net.</li>
+      <li>It fetches the station's page, pulls out PM2.5, PM10 and the timestamp, and appends a row to a CSV.</li>
+      <li>A second script turns the last 30 days into a small SVG chart in my <code>public_html</code>.</li>
+      <li>If the station is offline, the row says so instead of guessing.</li>
+    </ol>
+
+    <pre><code>5 * * * *  cd ~/khulna-aqi && ./venv/bin/python fetch.py && ./venv/bin/python chart.py</code></pre>
+
+    <h2>Why bother</h2>
+    <p>
+      Brick kilns around the city fire up in winter and the air gets bad fast. Having the history in
+      one place makes it easy to show that to my department, or to anyone writing about it.
+    </p>
+
+    <h2>Use it</h2>
+    <p>
+      The script and the CSV format are in <a href="/members/#projects">anika/khulna-aqi</a>, MIT
+      licensed. Adapting it to another city's station takes about 20 lines. If you do, tell me and
+      I'll link yours here.
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #f7f9fb;
+    color: #1f2933;
+    font: 17px/1.65 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  .crumb {
+    font: 13px/1.4 'Iosevka', ui-monospace, monospace;
+    color: #627d98;
+  }
+  h1 {
+    font-size: 2.3rem;
+    line-height: 1.15;
+    margin: 0.3rem 0 0.75rem;
+    color: #102a43;
+  }
+  .lead {
+    font-size: 1.1rem;
+    color: #334e68;
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin: 2rem 0 0.5rem;
+    color: #102a43;
+  }
+  .steps li {
+    margin-bottom: 0.4rem;
+  }
+  pre {
+    background: #102a43;
+    color: #d9e2ec;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font: 13px/1.5 'Iosevka', ui-monospace, monospace;
+  }
+  code {
+    font-family: 'Iosevka', ui-monospace, monospace;
+    font-size: 0.9em;
+  }
+  a {
+    color: #0b69a3;
+  }
+</style>

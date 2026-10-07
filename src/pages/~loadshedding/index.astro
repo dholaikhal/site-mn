@@ -1,0 +1,129 @@
+---
+import '@fontsource/iosevka/400.css';
+import '@fontsource/iosevka/700.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+// Eight weeks of power cuts at my place, logged by outage-log from the IPS.
+// Deterministic so the page doesn't change on every build.
+let s = 20260810;
+const rnd = () => ((s = (s * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
+const start = new Date('2026-08-10T00:00:00+06:00');
+const days = Array.from({ length: 56 }, (_, i) => {
+  const d = new Date(start.getTime() + i * 86400000);
+  const heat = d.getMonth() === 7 ? 1.4 : 1; // August is worse
+  const minutes = rnd() < 0.18 ? 0 : Math.round(rnd() * 150 * heat);
+  return { d, minutes };
+});
+const total = days.reduce((a, b) => a + b.minutes, 0);
+const worst = days.reduce((a, b) => (b.minutes > a.minutes ? b : a));
+const clean = days.filter((d) => d.minutes === 0).length;
+const level = (m: number) => (m === 0 ? 0 : m < 30 ? 1 : m < 70 ? 2 : m < 110 ? 3 : 4);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Asia/Dhaka' });
+---
+
+<Tilde user="loadshedding" title="outage log · ~loadshedding" icon="⚡" description="power cuts at my place in Mymensingh, logged from the IPS">
+  <main>
+    <h1>outage log</h1>
+    <p class="sub">mymensingh · logged by outage-log from my IPS · last 8 weeks</p>
+
+    <div class="stats">
+      <div><b>{Math.round(total / 60)}h</b><span>without power</span></div>
+      <div><b>{worst.minutes}m</b><span>worst day, {fmt(worst.d)}</span></div>
+      <div><b>{clean}</b><span>days with no cut</span></div>
+    </div>
+
+    <div class="grid" role="img" aria-label={`Calendar of daily power cut minutes from ${fmt(days[0].d)} to ${fmt(days[days.length - 1].d)}`}>
+      {days.map((x) => <span class={`l${level(x.minutes)}`} title={`${fmt(x.d)}: ${x.minutes} min`} />)}
+    </div>
+    <p class="legend">
+      less <span class="l0" /><span class="l1" /><span class="l2" /><span class="l3" /><span class="l4" /> more
+    </p>
+
+    <h2>the setup</h2>
+    <pre>
+grid ──┬── IPS 1000VA ──┬── router + ONU
+       │                └── laptop charger
+       └── raihan_k's ESP32 reads battery voltage
+                 └── posts to outage-log every minute</pre>
+    <p>
+      the IPS gives the router about 3 hours. tmux on mukto.net means my sessions don't care either
+      way. code: <a href="/members/#projects">loadshedding/outage-log</a>
+    </p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #0d1117;
+    color: #d1d5db;
+    font: 15px/1.6 'Iosevka', ui-monospace, monospace;
+  }
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    color: #fde047;
+    font-size: 2.2rem;
+    margin: 0;
+  }
+  .sub {
+    color: #6b7280;
+    margin-top: 0.2rem;
+  }
+  h2 {
+    color: #fff;
+    font-size: 1rem;
+    margin: 2.5rem 0 0.5rem;
+  }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    margin: 2rem 0 1.5rem;
+  }
+  .stats b {
+    display: block;
+    color: #fff;
+    font-size: 1.8rem;
+  }
+  .stats span {
+    color: #6b7280;
+  }
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(7, 14px);
+    grid-auto-flow: column;
+    grid-auto-columns: 14px;
+    gap: 4px;
+  }
+  .grid span,
+  .legend span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+  .l0 { background: #1f2937; }
+  .l1 { background: #713f12; }
+  .l2 { background: #a16207; }
+  .l3 { background: #eab308; }
+  .l4 { background: #fde047; }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #6b7280;
+    font-size: 12px;
+  }
+  pre {
+    color: #9ca3af;
+    overflow-x: auto;
+    font-size: 13px;
+  }
+  a {
+    color: #fde047;
+  }
+</style>

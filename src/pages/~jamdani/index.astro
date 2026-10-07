@@ -1,0 +1,164 @@
+---
+import Tilde from '../../layouts/Tilde.astro';
+---
+
+<Tilde user="jamdani" title="jamdani-svg" icon="❖" description="jamdani-style motifs, generated as SVG">
+  <main>
+    <header>
+      <h1>jamdani-svg</h1>
+      <p>
+        Jamdani weavers in Rupganj put motifs into muslin by hand, one weft at a time, from memory. I
+        can't do that. So I wrote a small script that builds jamdani-ish motifs out of the same
+        pieces: a diamond lattice, a stepped flower, a border of little paisleys.
+      </p>
+    </header>
+
+    <figure>
+      <svg id="cloth" viewBox="0 0 600 360" role="img" aria-label="A generated jamdani-style pattern"></svg>
+      <figcaption>
+        <span>seed <code id="seed">0</code></span>
+        <button type="button" id="again">Weave another</button>
+        <button type="button" id="save">Download SVG</button>
+      </figcaption>
+    </figure>
+
+    <p class="small">
+      Code: <a href="/members/#projects">jamdani/jamdani-svg</a>. The Shell Saturday posters by ~orpa use it.
+      Real jamdani is a UNESCO-listed craft and nothing here replaces a weaver.
+    </p>
+  </main>
+</Tilde>
+
+<script>
+  const svg = document.querySelector<SVGSVGElement>('#cloth')!;
+  const seedEl = document.querySelector('#seed')!;
+  const NS = 'http://www.w3.org/2000/svg';
+  const PALETTES = [
+    ['#f4efe4', '#1d3557', '#b5838d'],
+    ['#f6f1e7', '#7a1f2b', '#c9a227'],
+    ['#eef1ea', '#2d4a3e', '#d4a373'],
+    ['#f3eee6', '#3b2f5c', '#e07a5f'],
+  ];
+
+  function rng(seed: number) {
+    return () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 2 ** 32);
+  }
+  function el(name: string, attrs: Record<string, string | number>) {
+    const e = document.createElementNS(NS, name);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, String(v));
+    return e;
+  }
+
+  // A stepped, four-way symmetric flower on a 9x9 grid, like a weaver's count.
+  function motif(r: () => number) {
+    const cells: [number, number][] = [];
+    for (let y = 0; y < 5; y++)
+      for (let x = 0; x <= y; x++) if (r() < 0.55 || (x === y && y < 2)) cells.push([x, y]);
+    const out = new Set<string>();
+    for (const [x, y] of cells)
+      for (const [a, b] of [[x, y], [y, x]])
+        for (const sx of [1, -1]) for (const sy of [1, -1]) out.add(`${a * sx},${b * sy}`);
+    return [...out].map((s) => s.split(',').map(Number));
+  }
+
+  function weave(seed: number) {
+    const r = rng(seed);
+    const [bg, ink, accent] = PALETTES[Math.floor(r() * PALETTES.length)];
+    svg.replaceChildren(el('rect', { width: 600, height: 360, fill: bg }));
+    const m = motif(r);
+    const small = motif(r);
+    const cell = 4.6;
+    const g = el('g', {});
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 6; col++) {
+        const cx = 70 + col * 96 + (row % 2) * 48;
+        const cy = 72 + row * 72;
+        const pts = (row + col) % 2 ? small : m;
+        for (const [x, y] of pts)
+          g.append(el('rect', { x: cx + x * cell, y: cy + y * cell, width: cell, height: cell, fill: (row + col) % 2 ? accent : ink }));
+      }
+    }
+    svg.append(g);
+    // Borders: a row of small diamonds top and bottom.
+    for (const y of [18, 342]) {
+      for (let x = 12; x < 600; x += 24) {
+        svg.append(el('path', { d: `M${x} ${y - 6}l6 6-6 6-6-6z`, fill: ink, opacity: 0.85 }));
+      }
+    }
+    seedEl.textContent = String(seed);
+  }
+
+  let seed = Math.floor(Math.random() * 1e6);
+  weave(seed);
+  document.querySelector('#again')!.addEventListener('click', () => weave((seed = Math.floor(Math.random() * 1e6))));
+  document.querySelector('#save')!.addEventListener('click', () => {
+    const blob = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `jamdani-${seed}.svg` });
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #faf7f0;
+    color: #2b2620;
+    font: 17px/1.7 Georgia, 'Iowan Old Style', serif;
+  }
+  main {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-weight: 400;
+    font-size: 2.8rem;
+    margin: 0 0 0.5rem;
+    font-style: italic;
+  }
+  figure {
+    margin: 2rem 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #e3dccd;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    font: 14px/1.4 system-ui, sans-serif;
+  }
+  figcaption span {
+    margin-right: auto;
+    color: #7a6f60;
+  }
+  button {
+    font: inherit;
+    border: 1px solid #2b2620;
+    background: #2b2620;
+    color: #faf7f0;
+    border-radius: 3px;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+  }
+  button + button {
+    background: transparent;
+    color: #2b2620;
+  }
+  code {
+    font-size: 0.9em;
+  }
+  a {
+    color: #7a1f2b;
+  }
+  .small {
+    font-size: 0.9rem;
+    color: #7a6f60;
+  }
+</style>

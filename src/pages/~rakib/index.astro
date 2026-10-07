@@ -1,0 +1,161 @@
+---
+import '@fontsource-variable/anek-bangla/standard.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+// Phonetic layer from qmk-bangla: letters go where they sound.
+const BN: Record<string, string> = {
+  q: 'ঙ', w: 'ও', e: 'ে', r: 'র', t: 'ত', y: 'য়', u: 'ু', i: 'ি', o: 'ো', p: 'প',
+  a: 'া', s: 'স', d: 'দ', f: 'ফ', g: 'গ', h: 'হ', j: 'জ', k: 'ক', l: 'ল',
+  z: 'য', x: 'ক্ষ', c: 'চ', v: 'ভ', b: 'ব', n: 'ন', m: 'ম', '.': '।',
+};
+const rows: [string, number][][] = [
+  [['`', 1], ['1', 1], ['2', 1], ['3', 1], ['4', 1], ['5', 1], ['6', 1], ['7', 1], ['8', 1], ['9', 1], ['0', 1], ['-', 1], ['=', 1], ['⌫', 2]],
+  [['tab', 1.5], ['q', 1], ['w', 1], ['e', 1], ['r', 1], ['t', 1], ['y', 1], ['u', 1], ['i', 1], ['o', 1], ['p', 1], ['[', 1], [']', 1], ['\\', 1.5]],
+  [['caps', 1.75], ['a', 1], ['s', 1], ['d', 1], ['f', 1], ['g', 1], ['h', 1], ['j', 1], ['k', 1], ['l', 1], [';', 1], ["'", 1], ['enter', 2.25]],
+  [['shift', 2.25], ['z', 1], ['x', 1], ['c', 1], ['v', 1], ['b', 1], ['n', 1], ['m', 1], [',', 1], ['.', 1], ['/', 1], ['shift', 2.75]],
+  [['ctrl', 1.25], ['win', 1.25], ['alt', 1.25], ['', 6.25], ['fn', 1.25], ['bn', 1.25], ['menu', 1.25], ['ctrl', 1.25]],
+];
+const boards = [
+  ['A GH60 clone from a group buy', 'my daily board. Gateron Yellows, lubed by hand over two evenings'],
+  ['A Keychron K12', 'the office one. 60% too, wireless, lives in a drawer'],
+  ['A hand-wired 40%', "built from a kit during the August power cuts. doesn't work. yet"],
+];
+---
+
+<Tilde user="rakib" title="~rakib · keyboards" icon="⌨" description="keyboards, and a Bangla phonetic layer for QMK">
+  <main>
+    <h1>keyboards</h1>
+    <p>I'm Rakib. I type in Bangla and English all day, so I put both on one board.</p>
+
+    <div class="switch" role="group" aria-label="Layer">
+      <button type="button" data-layer="en" aria-pressed="true">base</button>
+      <button type="button" data-layer="bn" aria-pressed="false">bn layer (hold fn+bn)</button>
+    </div>
+
+    <div class="kb" data-layer="en">
+      {
+        rows.map((row) => (
+          <div class="row">
+            {row.map(([k, w]) => (
+              <span class="key" style={`flex:${w}`}>
+                <span class="en">{k}</span>
+                <span class="bn" lang="bn">{BN[k] ?? (k.length === 1 ? k : '')}</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <p class="small">
+      Vowels go to the vowel keys and consonants where they sound. Shift gives the aspirated ones
+      (k→ক, shift+k→খ). Firmware: <a href="/members/#projects">rakib/qmk-bangla</a>.
+    </p>
+
+    <h2>on my desk</h2>
+    <ul>
+      {
+        boards.map(([b, d]) => (
+          <li>
+            <b>{b}</b>: {d}
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Tilde>
+
+<script>
+  const kb = document.querySelector<HTMLElement>('.kb')!;
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.switch button')];
+  for (const b of buttons)
+    b.addEventListener('click', () => {
+      kb.dataset.layer = b.dataset.layer;
+      for (const x of buttons) x.setAttribute('aria-pressed', String(x === b));
+    });
+</script>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #e9e7e2;
+    color: #1d1d1f;
+    font: 16px/1.6 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  main {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    font-size: 2.6rem;
+    margin: 0;
+    letter-spacing: -0.03em;
+  }
+  h2 {
+    margin-top: 2.5rem;
+    font-size: 1.2rem;
+  }
+  .switch {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1rem;
+  }
+  .switch button {
+    font: inherit;
+    font-size: 0.9rem;
+    border: 1px solid #b9b5ad;
+    background: transparent;
+    border-radius: 999px;
+    padding: 0.2rem 0.8rem;
+    cursor: pointer;
+  }
+  .switch button[aria-pressed='true'] {
+    background: #1d1d1f;
+    color: #fff;
+    border-color: #1d1d1f;
+  }
+  .kb {
+    background: #3a3d42;
+    padding: 10px;
+    border-radius: 12px;
+    display: grid;
+    gap: 6px;
+    box-shadow: 0 10px 0 #2a2c30;
+    overflow-x: auto;
+  }
+  .row {
+    display: flex;
+    gap: 6px;
+    min-width: 600px;
+  }
+  .key {
+    height: 42px;
+    background: #f4f2ee;
+    border-radius: 6px;
+    box-shadow: inset 0 -4px 0 #cfcac1;
+    display: grid;
+    place-items: center;
+    font-size: 0.8rem;
+    color: #444;
+    position: relative;
+  }
+  .key .bn {
+    display: none;
+    font-family: 'Anek Bangla Variable', sans-serif;
+    font-size: 1.1rem;
+    color: #b42318;
+  }
+  .kb[data-layer='bn'] .key .en {
+    display: none;
+  }
+  .kb[data-layer='bn'] .key .bn {
+    display: block;
+  }
+  .small {
+    font-size: 0.9rem;
+    color: #55534f;
+  }
+  a {
+    color: #b42318;
+  }
+</style>

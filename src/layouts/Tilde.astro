@@ -1,0 +1,63 @@
+---
+// The bare shell for a member's ~/public_html page. Members style their own
+// pages; this only adds the document head and the ring bar at the bottom.
+import { MEMBERS } from '../data/members';
+
+interface Props {
+  user: string;
+  title?: string;
+  lang?: 'en' | 'bn';
+  description?: string;
+  icon?: string; // a single character or emoji for the tab icon
+}
+
+const { user, title = `~${user}`, lang = 'en', description, icon = '~' } = Astro.props;
+const ring = MEMBERS.filter((m) => m.page).map((m) => m.user).sort();
+const i = ring.indexOf(user);
+const prev = ring[(i - 1 + ring.length) % ring.length];
+const next = ring[(i + 1) % ring.length];
+const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="16" y="25" font-size="26" text-anchor="middle">${icon}</text></svg>`)}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href={favicon} />
+  </head>
+  <body>
+    <slot />
+    <nav class="mukto-ring" aria-label="mukto.net member pages" data-ring={ring.join(' ')} data-self={user}>
+      <a href="/">mukto.net</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/~${prev}/`} rel="prev">← ~{prev}</a>
+      <a href="/members/" class="mukto-random">random</a>
+      <a href={`/~${next}/`} rel="next">~{next} →</a>
+    </nav>
+    <script>
+      const nav = document.querySelector<HTMLElement>('.mukto-ring')!;
+      const others = nav.dataset.ring!.split(' ').filter((u) => u !== nav.dataset.self);
+      nav.querySelector('.mukto-random')!.addEventListener('click', (e) => {
+        e.preventDefault();
+        location.href = `/~${others[Math.floor(Math.random() * others.length)]}/`;
+      });
+    </script>
+    <style is:global>
+      .mukto-ring {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem 1rem;
+        padding: 1.5rem 1rem 2rem;
+        font: 13px/1.4 ui-monospace, 'SF Mono', Menlo, monospace;
+        opacity: 0.75;
+      }
+      .mukto-ring a {
+        color: inherit;
+      }
+    </style>
+  </body>
+</html>

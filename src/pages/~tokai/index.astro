@@ -1,0 +1,135 @@
+---
+import '@fontsource/iosevka/400.css';
+import '@fontsource/iosevka/700.css';
+import Tilde from '../../layouts/Tilde.astro';
+
+const uses = [
+  ['laptop', 'ThinkPad T14 gen 1, bought used from a Facebook group, battery at 71%'],
+  ['os', 'Fedora. tried Arch for a month, came back'],
+  ['terminal', 'WezTerm, Iosevka at 13pt'],
+  ['editor', 'Neovim, config below'],
+  ['shell', 'zsh, no framework, 40 lines of .zshrc'],
+  ['keyboard', 'the laptop one. rakib keeps trying to sell me a 60%'],
+  ['power', 'an IPS that gives me 40 minutes. enough to push'],
+];
+const plugins = ['lazy.nvim', 'telescope.nvim', 'nvim-treesitter', 'nvim-lspconfig', 'blink.cmp', 'oil.nvim', 'gitsigns.nvim', 'mini.nvim'];
+const keys = [
+  ['<space>ff', 'find files'],
+  ['<space>fg', 'grep the project'],
+  ['-', 'open the parent folder (oil)'],
+  ['gd', 'go to definition'],
+  ['<space>ca', 'code action'],
+  ['<space>w', 'save. yes i mapped save'],
+];
+---
+
+<Tilde user="tokai" title="~tokai/uses" icon="✎" description="what I use, and my nvim config">
+  <main>
+    <h1>/uses</h1>
+    <p class="intro">
+      i'm tokai. frontend dev in dhaka by day, editor-config tinkerer by night. my nvim config is 400
+      lines and i have shipped nothing with it this week.
+    </p>
+
+    <dl>
+      {
+        uses.map(([k, v]) => (
+          <>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </>
+        ))
+      }
+    </dl>
+
+    <h2>plugins</h2>
+    <ul class="chips">{plugins.map((p) => <li>{p}</li>)}</ul>
+
+    <h2>keys i actually use</h2>
+    <table>
+      <tbody>
+        {
+          keys.map(([k, v]) => (
+            <tr>
+              <td><kbd>{k}</kbd></td>
+              <td>{v}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <p class="foot">config: <a href="/members/#projects">tokai/nvim</a>. steal anything.</p>
+  </main>
+</Tilde>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #282828;
+    color: #ebdbb2;
+    font: 15px/1.65 'Iosevka', ui-monospace, monospace;
+  }
+  main {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 1rem;
+  }
+  h1 {
+    color: #fabd2f;
+    font-size: 2.4rem;
+    margin: 0;
+  }
+  .intro {
+    color: #bdae93;
+  }
+  h2 {
+    color: #8ec07c;
+    font-size: 1rem;
+    margin: 2rem 0 0.6rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.35rem 1rem;
+    margin: 1.5rem 0 0;
+  }
+  dt {
+    color: #fe8019;
+  }
+  dd {
+    margin: 0;
+  }
+  .chips {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .chips li {
+    background: #3c3836;
+    padding: 0.05rem 0.6rem;
+    border-radius: 3px;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  td {
+    padding: 0.2rem 1.25rem 0.2rem 0;
+  }
+  kbd {
+    color: #fabd2f;
+    font: inherit;
+    border: 1px solid #504945;
+    border-radius: 3px;
+    padding: 0 0.4rem;
+  }
+  a {
+    color: #83a598;
+  }
+  .foot {
+    margin-top: 2rem;
+    color: #bdae93;
+  }
+</style>
