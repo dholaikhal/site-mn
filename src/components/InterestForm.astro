@@ -5,11 +5,13 @@ interface Props {
   id?: string;
 }
 const { id = 'interest' } = Astro.props;
-// Empty on a static build with no endpoint configured (see astro.config.mjs).
 const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
 ---
 
-<form class="interest" id={id} method="post" action={endpoint || undefined} data-interest>
+<form class="interest" id={id} method="post" action={endpoint} data-interest>
+  <input type="hidden" name="source" value="form" />
+  <input type="hidden" name="_subject" value="New sign-up on mukto.net" />
+  <input type="hidden" name="_redirect" value="https://mukto.net/join/thanks/" />
   <div class="fields">
     <p class="field">
       <label for={`${id}-email`}>Email <span class="req">required</span></label>
@@ -80,28 +82,23 @@ const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
   </div>
 
   <p class="trap" aria-hidden="true">
-    <label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+    <label>Leave this empty <input name="_honey" type="text" tabindex="-1" autocomplete="off" /></label>
   </p>
 
   <p class="submit">
-    <button class="button" type="submit" disabled={!endpoint}>Add me to the list</button>
+    <button class="button" type="submit">Add me to the list</button>
     <span class="result" role="status" aria-live="polite"></span>
   </p>
-  {
-    !endpoint && (
-      <p class="offline">
-        The list isn't connected on this copy of the site. Email
-        <a href="mailto:hello@mukto.net">hello@mukto.net</a> instead.
-      </p>
-    )
-  }
   <p class="privacy">
-    We store what you send on our own server and use it only to tell you about mukto.net. No
-    newsletters you didn't ask for, no third parties. Reply to any email from us to have it deleted.
+    The list is kept with <a href="https://formboost.app">Formboost</a>, the form service we use,
+    and we use it only to tell you about mukto.net. No newsletters you didn't ask for. Reply to any
+    email from us to have your entry deleted. <a href="/privacy/">Privacy</a>
   </p>
 </form>
 
 <script>
+  import { submitInterest } from '../lib/submit';
+
   // Pre-tick boxes from the URL (/join/?use=events&help=sponsor) so other pages
   // can link straight to the relevant part of the form.
   const params = new URLSearchParams(location.search);
@@ -127,18 +124,21 @@ const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
       button.disabled = true;
       result.textContent = 'Adding you…';
       result.dataset.state = '';
+      const fd = new FormData(form);
+      const data: Record<string, string | string[]> = {};
+      for (const key of new Set(fd.keys())) {
+        if (key === '_redirect') continue;
+        const values = fd.getAll(key).map(String);
+        data[key] = key === 'uses' || key === 'helps' ? values : values[0];
+      }
+      data.lang = document.documentElement.lang;
       try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { accept: 'application/json' },
-        });
-        const body = await res.json().catch(() => ({ ok: false, error: 'The server sent an unexpected reply.' }));
-        if (body.ok) {
+        const reply = await submitInterest(form.action, data);
+        if (reply.ok) {
           location.href = '/join/thanks/';
           return;
         }
-        result.textContent = body.error;
+        result.textContent = reply.error;
         result.dataset.state = 'error';
       } catch {
         result.textContent = 'Could not reach mukto.net. Check your connection and try again.';
@@ -258,10 +258,6 @@ const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
   .result[data-state='error'] {
     color: var(--err);
     font-weight: 600;
-  }
-  .offline {
-    font-weight: 600;
-    color: var(--err);
   }
   .privacy {
     font-size: var(--step--1);

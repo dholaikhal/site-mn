@@ -33,6 +33,8 @@ const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
 <noscript><p>This terminal needs JavaScript. The form below does the same thing.</p></noscript>
 
 <script>
+  import { submitInterest } from '../lib/submit';
+
   type Step = { key: string; prompt: string; check: (v: string) => string | null };
 
   const USERNAME_RE = /^[a-z][a-z0-9_-]{1,23}$/;
@@ -134,26 +136,17 @@ const endpoint = import.meta.env.PUBLIC_INTEREST_ENDPOINT;
       mode = 'done';
       input.disabled = true;
       print('saving your place…', 'dim');
-      if (!endpoint) {
-        print('error: the list is not connected on this copy of the site. email hello@mukto.net instead.', 'err');
-        quit();
-        input.disabled = false;
-        return;
-      }
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', accept: 'application/json' },
-          body: JSON.stringify({
-            source: 'terminal',
-            lang: document.documentElement.lang,
-            username: answers.username,
-            email: answers.email,
-            uses: answers.uses,
-            helps: answers.helps,
-          }),
+        const split = (v?: string) => (v ? v.split(/[\s,]+/).filter(Boolean) : []);
+        const body = await submitInterest(endpoint!, {
+          source: 'terminal',
+          _subject: 'New sign-up on mukto.net (terminal)',
+          lang: document.documentElement.lang,
+          username: answers.username,
+          email: answers.email,
+          uses: split(answers.uses),
+          helps: split(answers.helps),
         });
-        const body = await res.json().catch(() => ({ ok: false, error: 'unexpected reply from server.' }));
         if (body.ok) {
           print(`~${answers.username} is noted. See you at the first login prompt.`, 'ok');
           quit();

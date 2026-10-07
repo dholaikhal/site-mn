@@ -66,7 +66,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
 
   // Honeypot: people never see this field, bots fill it. Pretend success.
-  if (typeof input.website === 'string' && input.website.trim()) return reply(request, 200, { ok: true });
+  const trap = input._honey ?? input.website;
+  if (typeof trap === 'string' && trap.trim()) return reply(request, 200, { ok: true });
 
   // Behind one reverse proxy (traefik), the last X-Forwarded-For entry is the one
   // the proxy added, so it can't be spoofed by the client.

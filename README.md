@@ -55,14 +55,20 @@ Two build targets, picked by `DEPLOY_TARGET`:
 
 | Target | Command | Output | Interest list |
 |---|---|---|---|
-| `node` (default) | `npm run build` | `dist/client` + `dist/server` | `/api/interest` on the same server |
-| `pages` | `DEPLOY_TARGET=pages npm run build` | `dist/` (static) | posts to `PUBLIC_INTEREST_ENDPOINT` |
+| `node` (default) | `npm run build` | `dist/client` + `dist/server` | Formboost, or `/api/interest` if configured |
+| `pages` | `DEPLOY_TARGET=pages npm run build` | `dist/` (static) | Formboost |
 
 **GitHub Pages** (`.github/workflows/pages.yml`) builds the `pages` target on every push to
-`main` and publishes it at mukto.net (`public/CNAME`). The form posts to the repository variable
-`INTEREST_ENDPOINT`. Leave it unset and the form says the list isn't connected.
+`main` and publishes it at mukto.net (`public/CNAME`).
 
-**The interest API** runs from the Docker image (Node target), anywhere you can run a container:
+**Sign-ups** go to the Formboost form "mukto.net: interest list" (endpoint `4t1nqc0j`, set in
+`astro.config.mjs`). Both the form and the terminal post JSON; without JavaScript the form does
+a plain post and Formboost redirects to `/join/thanks/`. Formboost's `_honey` field is the spam
+trap. Read and export sign-ups in the Formboost dashboard. To use the self-hosted endpoint
+instead, set `PUBLIC_INTEREST_ENDPOINT=/api/interest` at build time (or the repository variable
+`INTEREST_ENDPOINT` to its full URL for the Pages build).
+
+**The self-hosted interest API** (optional) runs from the Docker image, anywhere you can run a container:
 
 ```sh
 docker build -t mukto-net .

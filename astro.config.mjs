@@ -2,13 +2,16 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 
+// Where the join form and terminal send sign-ups. Formboost by default; set
+// PUBLIC_INTEREST_ENDPOINT=/api/interest to use the self-hosted endpoint instead.
+const FORMBOOST_ENDPOINT = 'https://formboost.app/f/4t1nqc0j';
+
 // Two build targets:
-//   DEPLOY_TARGET=node (default): static pages plus the /api/interest endpoint,
-//     served by the standalone Node server (see Dockerfile).
-//   DEPLOY_TARGET=pages: static pages only, for GitHub Pages. The join form then
-//     posts to PUBLIC_INTEREST_ENDPOINT, a Node deployment running elsewhere.
+//   DEPLOY_TARGET=node (default): static pages plus the optional /api/interest
+//     endpoint, served by the standalone Node server (see Dockerfile).
+//   DEPLOY_TARGET=pages: static pages only, for GitHub Pages.
 const target = process.env.DEPLOY_TARGET === 'pages' ? 'pages' : 'node';
-process.env.PUBLIC_INTEREST_ENDPOINT ??= target === 'node' ? '/api/interest' : '';
+process.env.PUBLIC_INTEREST_ENDPOINT ||= FORMBOOST_ENDPOINT;
 
 /** @type {import('astro').AstroIntegration} */
 const interestApi = {

@@ -13,9 +13,9 @@ draft: true
 
 ## The interest list
 
-When you fill in the join form or the terminal on the [join page](/join/), we store what you typed: your email address and anything else you chose to give. We use it only to tell you about mukto.net: when sign-ups open, events you said you'd come to, things you offered to help with.
+When you fill in the join form or the terminal on the [join page](/join/), what you typed (your email address and anything else you chose to give) goes to [Formboost](https://formboost.app), the form service we use. Formboost stores it and emails it to us. We use it only to tell you about mukto.net: when sign-ups open, events you said you'd come to, things you offered to help with.
 
-We don't share it with anyone, and we don't send newsletters you didn't ask for. Reply to any email from us, or write to hello@mukto.net, and we'll delete your entry.
+We don't share it with anyone else, and we don't send newsletters you didn't ask for. Reply to any email from us, or write to hello@mukto.net, and we'll delete your entry.
 
 ## If you have an account
 
