@@ -250,7 +250,7 @@ const canonical = new URL(path, Astro.site);
   }
   .foot {
     display: grid;
-    grid-template-columns: 2fr repeat(3, 1fr);
+    grid-template-columns: 2fr repeat(2, 1fr);
     gap: 2rem;
     padding-block: 3rem 2rem;
   }
@@ -308,7 +308,7 @@ const canonical = new URL(path, Astro.site);
 
   @media (max-width: 900px) {
     .foot {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
     .foot-org {
       grid-column: 1 / -1;

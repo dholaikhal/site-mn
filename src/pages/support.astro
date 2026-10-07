@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { GROUPS } from '../data/team';
 import { ORG } from '../data/org';
 ---
 
@@ -14,23 +13,21 @@ import { ORG } from '../data/org';
     <section class="ways">
       <div>
         <h2>Give time</h2>
-        <p>Pick a working group and go to its next meeting. No application.</p>
-        <ul class="groups">
-          {GROUPS.map((g) => <li>{g.name} <span>{g.meets}</span></li>)}
-        </ul>
-        <p><a href="/team/">Meet the groups</a></p>
+        <p>
+          Help run an event, teach a Shell Saturday session, translate a guide, or learn to look
+          after the server. Say so in <code>#adda</code>.
+        </p>
+        <p><a href="/team/">Who to talk to</a></p>
       </div>
       <div>
         <h2>Give money</h2>
         <p>
-          Members contribute what they like, monthly or once, by bKash or bank transfer to the
-          treasurer. Every contribution is recorded and receipted, and shows up in the
-          <a href="/accounts/">quarterly accounts</a>.
+          A few members chip in each month by bKash to cover the server. ~arpita keeps the
+          spreadsheet; any member can ask to see it.
         </p>
         <p>
-          Not a member? We'll take donations from the public once we're registered as a
-          non-profit and can issue receipts. <a href="/join/?help=donate#form">Pledge now</a> and we'll
-          tell you when.
+          We don't take money from outside the community yet. If you'd like to give later,
+          <a href="/join/?help=donate#form">say so on the form</a>.
         </p>
       </div>
       <div>

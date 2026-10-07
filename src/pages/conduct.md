@@ -29,8 +29,8 @@ Everyone in a mukto.net space: on the server, in chat, on the git forge, at even
 
 ## If something happens
 
-Tell an event organiser in person, message anyone in the conduct group, or email conduct@mukto.net. You'll get a reply from someone who isn't involved. We'll keep your report confidential, and we won't share your name with the person you report without your permission.
+Tell an event organiser in person, message ~nusrat or ~farhana on IRC, or email conduct@mukto.net, which goes to both. If your report is about one of them, write to the other. You'll get a reply from someone who isn't involved. We'll keep your report confidential, and we won't share your name with the person you report without your permission.
 
 ## What admins can do
 
-Depending on what happened: a private word, a public warning, removal from a chat or an event, suspension of an account, or a permanent ban from mukto.net spaces. Admins and committee members are held to this code too. The conduct group answers to the general assembly, not the committee, so a complaint about a committee member is handled by people that member doesn't oversee.
+Depending on what happened: a private word, a public warning, removal from a chat or an event, suspension of an account, or a permanent ban from mukto.net spaces. Admins are held to this code too.

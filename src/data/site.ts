@@ -22,23 +22,14 @@ export const FOOTER = [
     ],
   },
   {
-    title: 'Organisation',
+    title: 'mukto.net',
     links: [
       { href: '/about/', label: 'About' },
       { href: '/team/', label: 'Team' },
-      { href: '/governance/', label: 'Governance' },
-      { href: '/accounts/', label: 'Accounts' },
       { href: '/support/', label: 'Support us' },
-    ],
-  },
-  {
-    title: 'Policies',
-    links: [
       { href: '/conduct/', label: 'Code of conduct' },
-      { href: '/acceptable-use/', label: 'Acceptable use' },
-      { href: '/terms/', label: 'Terms of service' },
+      { href: '/rules/', label: 'Rules' },
       { href: '/privacy/', label: 'Privacy' },
-      { href: '/security/', label: 'Security' },
     ],
   },
 ] as const;
@@ -77,9 +68,9 @@ export const PHASES = [
     n: 0,
     name: 'motd',
     status: 'done',
-    summary: 'Name, principles and an interim committee, agreed at the founding adda in June.',
+    summary: 'Name, a few principles and someone to run the server, agreed at the founding adda in June.',
     statusBn: 'হয়ে গেছে',
-    summaryBn: 'জুনের প্রতিষ্ঠা আড্ডায় নাম, নীতি আর অন্তর্বর্তী কমিটি ঠিক হয়েছে।',
+    summaryBn: 'জুনের প্রতিষ্ঠা আড্ডায় নাম, কয়েকটা নীতি আর সার্ভার কে চালাবে, ঠিক হয়েছে।',
   },
   {
     n: 1,

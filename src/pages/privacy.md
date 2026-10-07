@@ -20,7 +20,7 @@ We don't share it with anyone, and we don't send newsletters you didn't ask for.
 ## If you have an account
 
 - **We keep:** your username, SSH public key, email address, the date you joined, and your files.
-- **Admins can see:** process lists, resource use and file sizes, as on any shared Unix system. They don't read your files or messages unless they're investigating a breach of the [acceptable use policy](/acceptable-use/) or the [code of conduct](/conduct/), or the law requires it, and when that happens it's logged and the committee is told.
+- **Admins can see:** process lists, resource use and file sizes, as on any shared Unix system. They don't read your files or messages unless they're investigating a breach of the [rules](/rules/) or the [code of conduct](/conduct/), or the law requires it, and when that happens it's logged and the other admins are told.
 - **System logs** (logins, mail, web) are kept for 30 days.
 - **Backups** are encrypted and kept for 30 days.
 
@@ -28,11 +28,11 @@ When you delete your account, your files and repositories are deleted within 30 
 
 ## Where data lives
 
-Our server is in Frankfurt, Germany, and backups are elsewhere in the EU. Only members of the infrastructure working group have administrative access.
+Our server is in Frankfurt, Germany, and backups are elsewhere in the EU. Only the two server admins have root.
 
 ## Requests from authorities
 
-We only hand over data when legally required to, and we'll tell the affected member unless we're legally prevented from doing so. Each year we publish how many requests we got.
+We only hand over data when legally required to, and we'll tell the affected member unless we're legally prevented from doing so.
 
 ## Questions
 

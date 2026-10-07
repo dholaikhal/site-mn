@@ -19,7 +19,7 @@ The idea is older than the web. [SDF](https://sdf.org) has been running one sinc
 
 ## What it isn't
 
-A pubnix isn't where you run a startup's production database. Resources are shared, so heavy or long-running jobs need an admin's OK, and everyone agrees to an [acceptable use policy](/acceptable-use/).
+A pubnix isn't where you run a startup's production database. Resources are shared, so heavy or long-running jobs need an admin's OK, and everyone agrees to a short list of [rules](/rules/).
 
 ## What mukto.net adds
 
