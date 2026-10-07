@@ -1,0 +1,253 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import { COMMITTEE, GROUPS } from '../data/team';
+import { MEMBERS } from '../data/members';
+import { identicon } from '../lib/avatar';
+
+const officer = (u: string) => COMMITTEE.find((o) => o.user === u);
+const volunteers = new Set(GROUPS.flatMap((g) => [g.lead, ...g.members])).size;
+---
+
+<Base title="Team" description="The interim executive committee and working groups that run mukto.net.">
+  <div class="wrap page-head">
+    <h1>Team</h1>
+    <p class="lede">
+      Everyone here is a volunteer and a member. The committee was chosen at the founding adda in
+      June and serves until the first election on 19 December.
+    </p>
+  </div>
+
+  <div class="wrap page-body">
+    <h2>How it's organised</h2>
+    <ol class="org" aria-label="Organisation structure, from the top">
+      <li class="tier">
+        <p class="t-name">General assembly</p>
+        <p class="t-who">All {MEMBERS.length} members. Meets once a year, votes on the constitution, the budget and the committee.</p>
+      </li>
+      <li class="tier">
+        <p class="t-name">Executive committee</p>
+        <p class="t-who">{COMMITTEE.length} people, elected for one year. Runs things between assemblies.</p>
+      </li>
+      <li class="tier">
+        <p class="t-name">Working groups</p>
+        <p class="t-who">{GROUPS.length} groups, {volunteers} volunteers. Anyone can join one.</p>
+      </li>
+    </ol>
+    <p class="note">
+      The conduct group reports to the general assembly. A complaint about a committee member is
+      handled by people that member doesn't oversee. Details in the <a href="/governance/">constitution</a>.
+    </p>
+
+    <h2>Executive committee, 2026</h2>
+    <ul class="committee">
+      {
+        COMMITTEE.map((o) => (
+          <li id={o.user}>
+            <Avatar user={o.user} avatar={o.avatar} photo={o.photo} size={112} label={o.name ?? o.user} />
+            <div>
+              <p class="role">
+                {o.role} <span lang="bn">{o.roleBn}</span>
+              </p>
+              <h3>{o.name ?? `~${o.user}`}</h3>
+              {o.name && <p class="handle mono">~{o.user}</p>}
+              <blockquote>{o.tagline}</blockquote>
+              {o.pgp && <p class="pgp mono">pgp {o.pgp}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>Working groups</h2>
+    <ul class="groups">
+      {
+        GROUPS.map((g) => {
+          const lead = officer(g.lead);
+          return (
+            <li>
+              <h3>{g.name}</h3>
+              <p>{g.does}</p>
+              <p class="lead">
+                <Avatar user={g.lead} avatar={lead?.avatar} size={28} />
+                <span>
+                  Led by <a class="mono" href={`#${g.lead}`}>~{g.lead}</a>
+                </span>
+              </p>
+              <ul class="chips">
+                {g.members.map((u) => (
+                  <li>
+                    <a href={`/members/#${u}`} class="mono">
+                      <span class="mini" set:html={identicon(u, 18)} />~{u}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p class="meets">{g.meets}</p>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <h2>Join a group</h2>
+    <p>
+      Go to a group's next meeting and say hello. Nobody keeps track of hours. If you're not a
+      member yet, <a href="/join/?help=ops&help=events&help=docs#form">put your name down</a> and
+      say which group.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .org {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    max-width: 40rem;
+    display: grid;
+    gap: 0;
+  }
+  .tier {
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--flag);
+    padding: 0.75rem 1rem;
+    position: relative;
+  }
+  .tier + .tier {
+    margin-top: 1.4rem;
+  }
+  .tier + .tier::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: -1.45rem;
+    height: 1.4rem;
+    border-left: 2px solid var(--rule);
+  }
+  .t-name {
+    font-weight: 700;
+    font-stretch: 112%;
+    margin: 0;
+  }
+  .t-who {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .note {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .committee {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+    gap: 0 2.5rem;
+  }
+  .committee > li {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: 1rem;
+  }
+  .committee > li:target {
+    outline: 2px solid var(--flag);
+    outline-offset: 6px;
+  }
+  .role {
+    font-size: var(--step--1);
+    color: var(--flag);
+    font-weight: 600;
+    margin: 0 0 0.1rem;
+  }
+  .role span {
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 0.3rem;
+  }
+  h3 {
+    margin: 0;
+    font-size: var(--step-1);
+  }
+  .handle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  blockquote {
+    margin: 0.6rem 0 0;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--rule);
+    line-height: 1.45;
+  }
+  .pgp {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0.5rem 0 0;
+  }
+  .groups {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 1.5rem 2.5rem;
+  }
+  .groups > li {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.75rem;
+  }
+  .groups p {
+    margin: 0 0 0.5rem;
+  }
+  .lead {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+  }
+  .chips {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .chips a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1rem 0.45rem 0.1rem 0.2rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .chips a:hover {
+    border-color: var(--flag);
+  }
+  .mini {
+    line-height: 0;
+  }
+  .meets {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  @media (max-width: 480px) {
+    .committee > li {
+      gap: 0.9rem;
+    }
+    .committee :global(.avatar) {
+      width: 64px !important;
+      height: 64px !important;
+    }
+  }
+</style>
